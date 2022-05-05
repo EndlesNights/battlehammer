@@ -1,0 +1,26 @@
+{
+    "name": "battlehammer",
+    "title": "Battlehammer",
+    "description": "Turn Based Wargame",
+    "version": "0.0.0",
+    "minimumCoreVersion": "0.8.9",
+    "compatibleCoreVersion": "9",
+    "author": "EndlesNights#9000",
+    "esmodules": ["module/battlehammer.js"],
+    "styles": ["styles/battlehammer.css"],
+    "packs": [],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        }
+    ],
+    "gridDistance": 1,
+    "gridUnits": "inch",
+    "primaryTokenAttribute": "health",
+    "url": "",
+    "manifest": "",
+    "download": "",
+    "license": "LICENSE.txt"
+}

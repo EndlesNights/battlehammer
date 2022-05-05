@@ -1,0 +1,94 @@
+{
+"Actor": {
+	"types": ["model"],
+	"model": {
+		"biography": "",
+		"attributes": {
+			"movement": {
+				"value": 0,
+				"base": 0
+			},
+			"weaponSkill":{
+				"value": 0,
+				"base": 0
+			},
+			"ballisticSkill":{
+				"value": 0,
+				"base": 0
+			},
+			"strength":{
+				"value": 0,
+				"base": 0
+			},
+			"toughness":{
+				"value": 0,
+				"base": 0
+			},
+			"wounds":{
+				"value": 0,
+				"base": 0
+			},
+			"attacks":{
+				"value": 0,
+				"base": 0
+			},
+			"leadership":{
+				"value": 0,
+				"base": 0
+			},
+			"save":{
+				"value": 0,
+				"base": 0
+			},
+			"points":{
+				"value": 0,
+				"base": 0
+			},
+			"powerLevel":{
+				"value": 0,
+				"base": 0
+			},
+			"commandPoint":{
+				"value": 0,
+				"base": 0
+			}
+		},
+		"groups": {}
+	}
+},
+"Item": {
+	"types": ["item", "weapon"],
+	"item": {
+		"description": "",
+		"quantity": 1,
+		"attributes": {},
+		"groups": {}
+	},
+	"weapon":{
+		"strength":{
+			"value": 0,
+			"base": 0
+		},
+		"armourPen":{
+			"value": 0,
+			"base": 0
+		},
+		"damage":{
+			"value": 0,
+			"base": 0
+		},
+		"points":{
+			"value": 0,
+			"base": 0
+		},
+		"powerLevel":{
+			"value": 0,
+			"base": 0
+		},
+		"commandPoint":{
+			"value": 0,
+			"base": 0
+		}
+	}
+}
+}
