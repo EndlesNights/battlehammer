@@ -168,3 +168,9 @@ Hooks.on("getItemDirectoryEntryContext", (html, options) => {
         }
     });
 });
+
+
+Hooks.on("preCreateScene", (scene,data,options,userID) =>{
+    //set default gridType to gridless
+    scene.data.update({gridType: 0});
+});
