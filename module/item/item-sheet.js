@@ -5,7 +5,7 @@ import {ATTRIBUTE_TYPES} from "../constants.js";
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class WarforgeItemSheet extends ItemSheet {
+export class BattlehammerItemSheet extends ItemSheet {
 
     /** @inheritdoc */
     static get defaultOptions() {

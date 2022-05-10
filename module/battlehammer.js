@@ -4,12 +4,12 @@
  */
 
 // Import Modules
-import { WarforgeActor } from "./actor/actor.js";
-import { WarforgeItem } from "./item/item.js";
-import { WarforgeItemSheet } from "./item/item-sheet.js";
-import { WarforgeActorSheet } from "./actor/actor-sheet.js";
+import { BattlehammerActor } from "./actor/actor.js";
+import { BattlehammerItem } from "./item/item.js";
+import { BattlehammerItemSheet } from "./item/item-sheet.js";
+import { BattlehammerActorSheet } from "./actor/actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
-import { createwarforgeMacro } from "./macro.js";
+import { createBattlehammerMacro } from "./macro.js";
 
 /* -------------------------------------------- */
 /*    Foundry VTT Initialization                                    */
@@ -31,20 +31,20 @@ Hooks.once("init", async function() {
     };
 
     game.battlehammer = {
-        WarforgeActor,
-        createwarforgeMacro,
+        BattlehammerActor,
+        createBattlehammerMacro,
         useEntity: foundry.utils.isNewerVersion("9", game.version ?? game.data.version)
     };
 
     // Define custom Document classes
-    CONFIG.Actor.documentClass = WarforgeActor;
-    CONFIG.Item.documentClass = WarforgeItem;
+    CONFIG.Actor.documentClass = BattlehammerActor;
+    CONFIG.Item.documentClass = BattlehammerItem;
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
-    Actors.registerSheet("battlehammer", WarforgeActorSheet, { makeDefault: true });
+    Actors.registerSheet("battlehammer", BattlehammerActorSheet, { makeDefault: true });
     Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("battlehammer", WarforgeItemSheet, { makeDefault: true });
+    Items.registerSheet("battlehammer", BattlehammerItemSheet, { makeDefault: true });
 
     // Register system settings
     game.settings.register("battlehammer", "macroShorthand", {
@@ -99,7 +99,7 @@ Hooks.once("init", async function() {
 /**
  * Macrobar hook.
  */
-Hooks.on("hotbarDrop", (bar, data, slot) => createwarforgeMacro(data, slot));
+Hooks.on("hotbarDrop", (bar, data, slot) => createBattlehammerMacro(data, slot));
 
 /**
  * Adds the actor template context menu.

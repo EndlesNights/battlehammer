@@ -26,7 +26,8 @@
 			},
 			"wounds":{
 				"value": 0,
-				"base": 0
+				"base": 0,
+				"max": 0
 			},
 			"attacks":{
 				"value": 0,
@@ -53,18 +54,48 @@
 				"base": 0
 			}
 		},
+		"details":{
+			"categories": [],
+			"selections": [],
+			"rules": [],
+			"psyker":{
+				"isPsyker": false,
+				"cast": 0,
+				"deny": 0,
+				"other": ""
+			}
+		},
 		"groups": {}
 	}
 },
 "Item": {
-	"types": ["item", "weapon"],
-	"item": {
-		"description": "",
-		"quantity": 1,
-		"attributes": {},
-		"groups": {}
+	"types": ["ability","psychicPower", "weapon"],
+	"templates": {
+		"itemDescription": {
+			"description": "",
+			"ref":""
+		}
+	},
+	"ability":{
+		"templates": ["itemDescription"]
+	},
+	"psychicPower":{
+		"templates": ["itemDescription"],
+		"charge": 0,
+		"range":{
+			"value": 0,
+			"base": 0
+		}
 	},
 	"weapon":{
+		"templates": ["itemDescription"],
+		"range":{
+			"value": 0,
+			"base": 0
+		},
+		"type":{
+			"value": ""
+		},
 		"strength":{
 			"value": 0,
 			"base": 0
@@ -85,6 +116,7 @@
 			"value": 0,
 			"base": 0
 		},
+		"abilities":[],
 		"commandPoint":{
 			"value": 0,
 			"base": 0

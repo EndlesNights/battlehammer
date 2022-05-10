@@ -5,7 +5,7 @@
  * @param {number} slot         The hotbar slot to use
  * @returns {Promise}
  */
-export async function createwarforgeMacro(data, slot) {
+export async function createBattlehammerMacro(data, slot) {
     const command = `const roll = new Roll("${data.roll}", actor ? actor.getRollData() : {});
     roll.toMessage({speaker, flavor: "${data.label}"});`;
     let macro = game.macros.find(m => (m.name === data.label) && (m.command === command));

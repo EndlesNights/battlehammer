@@ -16,9 +16,10 @@
             "path": "lang/en.json"
         }
     ],
+    "gridType": 3,
     "gridDistance": 1,
     "gridUnits": "inch",
-    "primaryTokenAttribute": "health",
+    "primaryTokenAttribute": "attributes.wounds",
     "url": "",
     "manifest": "",
     "download": "",
