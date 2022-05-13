@@ -11,7 +11,7 @@ export class BattlehammerActorSheet extends ActorSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["battlehammer", "sheet", "actor"],
-            template: "systems/battlehammer/templates/actor-sheet.html",
+            template: "systems/battlehammer/templates/actor/actor-sheet.html",
             width: 600,
             height: 600,
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}],

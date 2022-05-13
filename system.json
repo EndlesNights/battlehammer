@@ -7,7 +7,11 @@
     "compatibleCoreVersion": "9",
     "author": "EndlesNights#9000",
     "esmodules": ["module/battlehammer.js"],
-    "styles": ["styles/battlehammer.css"],
+    "scripts": [
+        "./lib/jszip/jszip.min.js",
+        "./lib/jxon/jxon.min.js"
+    ],
+    "styles": ["styles/battlehammer.css", "styles/battlescribe.css"],
     "packs": [],
     "languages": [
         {

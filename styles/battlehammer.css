@@ -243,3 +243,17 @@
     min-width: 460px;
     min-height: 400px;
 }
+
+
+.system-battlehammer table{
+    width: auto;
+}
+
+.system-battlehammer table th{
+    white-space: nowrap;
+}
+
+.system-battlehammer table td.profile-name{
+    word-break:normal;
+    white-space: nowrap;
+}

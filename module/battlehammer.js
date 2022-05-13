@@ -11,6 +11,8 @@ import { BattlehammerActorSheet } from "./actor/actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 import { createBattlehammerMacro } from "./macro.js";
 
+import DataImporter from "./data-importer.js"
+
 /* -------------------------------------------- */
 /*    Foundry VTT Initialization                                    */
 /* -------------------------------------------- */
@@ -45,6 +47,34 @@ Hooks.once("init", async function() {
     Actors.registerSheet("battlehammer", BattlehammerActorSheet, { makeDefault: true });
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("battlehammer", BattlehammerItemSheet, { makeDefault: true });
+
+    //Register Data Importer
+    game.settings.registerMenu("battlehammer", "aieImporter", {
+        name: "Roster Import",
+        label: "Roster Importer (save settings before using)",
+        hint: "Import data from vmod",
+        icon: "fas fa-file-import",
+        type: DataImporter,
+        restricted: true,
+    });
+
+    game.settings.register("battlehammer", "aieImporter", {
+        name: "Roster Importer",
+        scope: "world",
+        default: {},
+        config: false,
+        default: {},
+        type: Object,
+    });
+
+    game.settings.register("battlehammer", "importpath", {
+        name: "Import Path (Data/)",
+        hint: "Location where the module will look for Roster rosz files to import",
+        scope: "world",
+        config: true,
+        default: "rosters/import",
+        type: String
+    });
 
     // Register system settings
     game.settings.register("battlehammer", "macroShorthand", {
@@ -169,8 +199,7 @@ Hooks.on("getItemDirectoryEntryContext", (html, options) => {
     });
 });
 
-
-Hooks.on("preCreateScene", (scene,data,options,userID) =>{
+Hooks.on("preCreateScene", (scene, data, options, userID) => {
     //set default gridType to gridless
     scene.data.update({gridType: 0});
 });
