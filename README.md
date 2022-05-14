@@ -1,3 +1,3 @@
 # Battlehammer
 
-System for plaing tabletop wargames within on Foundry VTT
+A Simple System for playing tabletop wargames within on Foundry VTT.
