@@ -47,8 +47,11 @@
     float: left;
     text-align: center;
 }
+.battlehammer .wounds {
+    min-width: 118px;
+}
 .battlehammer .resource input {
-    width: 100px;
+    width: 25px;
     height: 28px;
 }
 .battlehammer .tabs {

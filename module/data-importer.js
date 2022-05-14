@@ -73,17 +73,146 @@ export default class DataImporter extends FormApplication {
 		}
 
 		// let data = zip.files[Object.keys(zip.files)[0]].async("text");
-		let data = await zip.file(Object.keys(zip.files)[0]).async("text");
-		const xmlDoc = ImportHelpers.stringToXml(data);
+		let rawData = await zip.file(Object.keys(zip.files)[0]).async("text");
+		const xmlDoc = ImportHelpers.stringToXml(rawData);
 
 		console.log(zip)
-		console.log(data)
 		console.log(xmlDoc)
 
-		const jsonDoc = JXON.xmlToJs(xmlDoc);
-		console.log(jsonDoc);
+		const data = JXON.xmlToJs(xmlDoc);
+		console.log(data);
 
+		let rootFolder = await Folder.create({
+			name: data.roster.$name,
+			type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
+			color: "#d10000"
+		});
+
+		const subFolders = {};
+
+		// data.roster.forces.force.selections.selection
+		for(const obj of data.roster.forces.force.selections.selection){
+			console.log(obj)
+			if(obj.$type === "model"){
+
+			}
+			else if(obj.$type === "unit"){
+				const primary = this.primaryCategory(obj.categories.category);
+
+				if(!subFolders[primary]){
+					subFolders[primary] = await Folder.create({
+						name: primary,
+						type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
+						parent: rootFolder.id,
+						color: "#d10000"
+					});
+				}
+
+				const unitFolder = await Folder.create({
+					name: obj.$name,
+					type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
+					parent: subFolders[primary].id,
+					color: "#d10000"
+				})
+
+				if(obj.selections?.selection && this.isIterable(obj.selections.selection)){
+					for(const model of obj.selections.selection){
+						if(model.$type !== "model") continue;
+						console.log(model)
+
+						let stats = null;
+						
+						if(this.isIterable(model.profiles?.profile?.characteristics?.characteristic)){
+							stats = this.getCharacteristicsStats(model.profiles.profile.characteristics.characteristic);
+						}
+						else if(this.isIterable(obj.profiles?.profile)) {
+							stats = this.getProfileCharacteristicsObjStats(obj.profiles.profile, model.$name);
+						}
+
+						console.log(stats)
+
+						const modelData = stats? {
+							attributes:{
+								movement: {value:stats.m},
+								weaponSkill: {value:stats.ws},
+								ballisticSkill: {value:stats.bs},
+								strength: {value:stats.s},
+								toughness: {value:stats.t},
+								attacks: {value:stats.a},
+								leadership: {value:stats.ld},
+								save: {value:stats.save}
+							},
+							details: {
+								wounds: {value:stats.w, max:stats.w}
+							}
+						} : null;
+
+						for(let i = 0; i < model.$number; i++){
+							await Actor.create({
+								name: model.$number == 1 ? model.$name : `${model.$name} (${i+1})`,
+								type: "model",
+								folder: unitFolder.id,
+								data: modelData
+							});
+						}
+
+					}
+				} 
+				else if(obj.profiles?.profile && this.isIterable(obj.profiles.profile) ){
+					//check here for the unit
+					console.log(obj)
+				}
+				else {
+					console.log("Selection not iterable!");
+					console.log(obj)
+				}
+
+			}
+		}
 		CONFIG.temporary = {};
 		this.close();
 	};
+
+	// Searches through the category list and returns the string of the primary
+	primaryCategory(arry){
+		// uses reverse array because quite offten it is the last value
+		for(const obj of arry.reverse()){
+			if(obj.$primary === "true"){
+				return obj.$name;
+			}
+		}
+	}
+
+	getCharacteristicsStats(characteristic){
+		let stats = {};
+		for(const c of characteristic){
+			const key = c.$name.toLowerCase();
+			stats[key] = (key === 'w') ? parseInt(c._.replace(/\D/g,'')) : c._ ;
+		}
+		return stats
+	}
+	getProfileCharacteristicsObjStats(profiles, name){
+		if(!this.isIterable(profiles)){
+			return null;
+		}
+		for(const p of profiles){
+			if(p.$name === name){
+				return this.getCharacteristicsStats(p.characteristics.characteristic);
+			}
+		}
+		for(const p of profiles){
+			if(name.includes(p.$name)){
+				return this.getCharacteristicsStats(p.characteristics.characteristic);
+			}
+		}
+		return null;
+	}
+
+	isIterable(obj) {
+		// checks for null and undefined
+		if (obj == null) {
+			return false;
+		}
+		return typeof obj[Symbol.iterator] === 'function';
+	}
 }

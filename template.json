@@ -5,53 +5,37 @@
 		"biography": "",
 		"attributes": {
 			"movement": {
-				"value": 0,
-				"base": 0
+				"value": 0
 			},
 			"weaponSkill":{
-				"value": 0,
-				"base": 0
+				"value": 0
 			},
 			"ballisticSkill":{
-				"value": 0,
-				"base": 0
+				"value": 0
 			},
 			"strength":{
-				"value": 0,
-				"base": 0
+				"value": 0
 			},
 			"toughness":{
-				"value": 0,
-				"base": 0
-			},
-			"wounds":{
-				"value": 0,
-				"base": 0,
-				"max": 0
+				"value": 0
 			},
 			"attacks":{
-				"value": 0,
-				"base": 0
+				"value": 0
 			},
 			"leadership":{
-				"value": 0,
-				"base": 0
+				"value": 0
 			},
 			"save":{
-				"value": 0,
-				"base": 0
+				"value": 0
 			},
 			"points":{
-				"value": 0,
-				"base": 0
+				"value": 0
 			},
 			"powerLevel":{
-				"value": 0,
-				"base": 0
+				"value": 0
 			},
 			"commandPoint":{
-				"value": 0,
-				"base": 0
+				"value": 0
 			}
 		},
 		"details":{
@@ -63,6 +47,10 @@
 				"cast": 0,
 				"deny": 0,
 				"other": ""
+			},
+			"wounds":{
+				"value": 0,
+				"max": 0
 			}
 		},
 		"groups": {}
@@ -90,36 +78,29 @@
 	"weapon":{
 		"templates": ["itemDescription"],
 		"range":{
-			"value": 0,
-			"base": 0
+			"value": 0
 		},
 		"type":{
 			"value": ""
 		},
 		"strength":{
-			"value": 0,
-			"base": 0
+			"value": 0
 		},
 		"armourPen":{
-			"value": 0,
-			"base": 0
+			"value": 0
 		},
 		"damage":{
-			"value": 0,
-			"base": 0
+			"value": 0
 		},
 		"points":{
-			"value": 0,
-			"base": 0
+			"value": 0
 		},
 		"powerLevel":{
-			"value": 0,
-			"base": 0
+			"value": 0
 		},
 		"abilities":[],
 		"commandPoint":{
-			"value": 0,
-			"base": 0
+			"value": 0
 		}
 	}
 }
