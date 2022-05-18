@@ -82,7 +82,7 @@ export default class DataImporter extends FormApplication {
 		const data = JXON.xmlToJs(xmlDoc);
 		console.log(data);
 
-		let rootFolder = await Folder.create({
+		const rootFolder = await Folder.create({
 			name: data.roster.$name,
 			type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
 			color: "#d10000"
@@ -93,85 +93,113 @@ export default class DataImporter extends FormApplication {
 		// data.roster.forces.force.selections.selection
 		for(const obj of data.roster.forces.force.selections.selection){
 			console.log(obj)
+			console.log(obj.$name)
 			if(obj.$type === "model"){
-
+				const primary = this.primaryCategory(obj.categories.category);
+				await this.hanndleSubFolder(subFolders, primary, rootFolder.id);
+				const unitFolder = await this.hanndleUnitFolder(obj, subFolders[primary].id);
+				this.parseUnitData(obj, unitFolder)
+				this.parseModelData(obj, obj, unitFolder)
 			}
 			else if(obj.$type === "unit"){
 				const primary = this.primaryCategory(obj.categories.category);
-
-				if(!subFolders[primary]){
-					subFolders[primary] = await Folder.create({
-						name: primary,
-						type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
-						parent: rootFolder.id,
-						color: "#d10000"
-					});
-				}
-
-				const unitFolder = await Folder.create({
-					name: obj.$name,
-					type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
-					parent: subFolders[primary].id,
-					color: "#d10000"
-				})
-
-				if(obj.selections?.selection && this.isIterable(obj.selections.selection)){
-					for(const model of obj.selections.selection){
-						if(model.$type !== "model") continue;
-						console.log(model)
-
-						let stats = null;
-						
-						if(this.isIterable(model.profiles?.profile?.characteristics?.characteristic)){
-							stats = this.getCharacteristicsStats(model.profiles.profile.characteristics.characteristic);
-						}
-						else if(this.isIterable(obj.profiles?.profile)) {
-							stats = this.getProfileCharacteristicsObjStats(obj.profiles.profile, model.$name);
-						}
-
-						console.log(stats)
-
-						const modelData = stats? {
-							attributes:{
-								movement: {value:stats.m},
-								weaponSkill: {value:stats.ws},
-								ballisticSkill: {value:stats.bs},
-								strength: {value:stats.s},
-								toughness: {value:stats.t},
-								attacks: {value:stats.a},
-								leadership: {value:stats.ld},
-								save: {value:stats.save}
-							},
-							details: {
-								wounds: {value:stats.w, max:stats.w}
-							}
-						} : null;
-
-						for(let i = 0; i < model.$number; i++){
-							await Actor.create({
-								name: model.$number == 1 ? model.$name : `${model.$name} (${i+1})`,
-								type: "model",
-								folder: unitFolder.id,
-								data: modelData
-							});
-						}
-
-					}
-				} 
-				else if(obj.profiles?.profile && this.isIterable(obj.profiles.profile) ){
-					//check here for the unit
-					console.log(obj)
-				}
-				else {
-					console.log("Selection not iterable!");
-					console.log(obj)
-				}
-
+				await this.hanndleSubFolder(subFolders, primary, rootFolder.id);
+				const unitFolder = await this.hanndleUnitFolder(obj, subFolders[primary].id);
+				
+				this.parseUnitData(obj, unitFolder);
 			}
 		}
 		CONFIG.temporary = {};
 		this.close();
 	};
+
+	async hanndleSubFolder(subFolders, primary, rootFolderID){
+		if(!subFolders[primary]){
+			subFolders[primary] = await Folder.create({
+				name: primary,
+				type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
+				parent: rootFolderID,
+				color: "#d10000"
+			});
+		}
+	}
+
+	async hanndleUnitFolder(obj, primaryID){
+		return await Folder.create({
+			name: obj.$name,
+			type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
+			parent: primaryID,
+			color: "#d10000"
+		})
+	}
+
+	async parseModelData(obj, model, unitFolder){
+
+		console.log(model)
+		let stats = null;
+		
+		if(this.isIterable(model.profiles?.profile?.characteristics?.characteristic)){
+			stats = this.getCharacteristicsStats(model.profiles.profile.characteristics.characteristic);
+		}
+		else if(this.isIterable(obj?.profiles?.profile)) {
+			stats = this.getProfileCharacteristicsObjStats(obj?.profiles.profile, model.$name);
+		}
+
+		console.log(stats)
+
+		const modelData = stats? {
+			attributes:{
+				movement: {value:stats.m},
+				weaponSkill: {value:stats.ws},
+				ballisticSkill: {value:stats.bs},
+				strength: {value:stats.s},
+				toughness: {value:stats.t},
+				attacks: {value:stats.a},
+				leadership: {value:stats.ld},
+				save: {value:stats.save}
+			},
+			details: {
+				wounds: {value:stats.w, max:stats.w}
+			}
+		} : null;
+
+		for(let i = 0; i < model.$number; i++){
+			await Actor.create({
+				name: model.$number == 1 ? model.$name : `${model.$name} (${i+1})`,
+				type: "model",
+				folder: unitFolder.id,
+				data: modelData
+			});
+		}
+	}
+
+	async parseUnitData(obj, unitFolder){
+		if(obj.selections?.selection && this.isIterable(obj.selections.selection)){
+			for(const model of obj.selections.selection){
+				if(model.$type == "model"){
+					this.parseModelData(obj, model, unitFolder);
+				}
+				// else if(model.$type == "unit"){
+				// 	this.parseModelData(obj, model, unitFolder);
+				// 	console.log(model.$type);
+				// 	console.log(model)
+				// }
+				else {
+					console.log(model.$type);
+					console.log(model)
+				}
+				
+			}
+		} 
+		else if(obj.profiles?.profile && this.isIterable(obj.profiles.profile) ){
+			//check here for the unit
+			console.log(obj)
+		}
+		else {
+			console.log("Selection not iterable!");
+			console.log(obj)
+		}
+	}
 
 	// Searches through the category list and returns the string of the primary
 	primaryCategory(arry){

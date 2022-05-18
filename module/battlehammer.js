@@ -10,6 +10,8 @@ import { BattlehammerItemSheet } from "./item/item-sheet.js";
 import { BattlehammerActorSheet } from "./actor/actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 import { createBattlehammerMacro } from "./macro.js";
+import UnitCoherence from "./apps/coherency.js";
+import Scatter from "./apps/scatter.js";
 
 import DataImporter from "./data-importer.js"
 
@@ -47,6 +49,10 @@ Hooks.once("init", async function() {
     Actors.registerSheet("battlehammer", BattlehammerActorSheet, { makeDefault: true });
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("battlehammer", BattlehammerItemSheet, { makeDefault: true });
+
+    // Set up functions so that they can be called from the console under game
+    game.unitCoherence = UnitCoherence;
+    game.scatter = function(){Scatter()};
 
     //Register Data Importer
     game.settings.registerMenu("battlehammer", "aieImporter", {
