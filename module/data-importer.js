@@ -85,7 +85,7 @@ export default class DataImporter extends FormApplication {
 		const rootFolder = await Folder.create({
 			name: data.roster.$name,
 			type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
-			color: "#d10000"
+			color: game.user.color//"#d10000"
 		});
 
 		const subFolders = {};
@@ -159,7 +159,7 @@ export default class DataImporter extends FormApplication {
 				save: {value:stats.save}
 			},
 			details: {
-				wounds: {value:stats.w, max:stats.w}
+				health: {value:stats.w, max:stats.w} //wounds
 			}
 		} : null;
 
@@ -168,7 +168,9 @@ export default class DataImporter extends FormApplication {
 				name: model.$number == 1 ? model.$name : `${model.$name} (${i+1})`,
 				type: "model",
 				folder: unitFolder.id,
-				data: modelData
+				data: modelData,
+				permission: {default: 1},
+				token: {actorLink: true, flags:{battlehammer:{ownerID: game.userId}}}
 			});
 		}
 	}

@@ -23,9 +23,9 @@
     "gridType": 3,
     "gridDistance": 1,
     "gridUnits": "inch",
-    "primaryTokenAttribute": "attributes.wounds",
-    "url": "",
-    "manifest": "",
+    "primaryTokenAttribute": "attributes.health",
+    "url": "https://github.com/EndlesNights/battlehammer",
+    "manifest": "https://raw.githubusercontent.com/EndlesNights/battlehammer/main/system.json",
     "download": "",
     "license": "LICENSE.txt"
 }

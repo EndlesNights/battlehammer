@@ -48,7 +48,7 @@
 				"deny": 0,
 				"other": ""
 			},
-			"wounds":{
+			"health":{
 				"value": 0,
 				"max": 0
 			}

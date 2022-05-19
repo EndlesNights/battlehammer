@@ -10,6 +10,8 @@ import { BattlehammerItemSheet } from "./item/item-sheet.js";
 import { BattlehammerActorSheet } from "./actor/actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 import { createBattlehammerMacro } from "./macro.js";
+
+import moveToken from "./overrides/moveToken.js"
 import UnitCoherence from "./apps/coherency.js";
 import Scatter from "./apps/scatter.js";
 
@@ -53,6 +55,28 @@ Hooks.once("init", async function() {
     // Set up functions so that they can be called from the console under game
     game.unitCoherence = UnitCoherence;
     game.scatter = function(){Scatter()};
+
+    Ruler.prototype.moveToken = moveToken;
+    Token.prototype._getBorderColor = function (){
+        if(this._controlled) return CONFIG.Canvas.dispositionColors.CONTROLLED;
+        else if (this._hover) {
+            const ownerID = this.data.flags.battlehammer?.ownerID || null
+            if(ownerID){
+                return Number(`0x${game.users.get(ownerID).data.color.substring(1)}`);
+            }
+
+            //from the origonal class;
+            const colors = CONFIG.Canvas.dispositionColors;
+            let d = parseInt(this.data.disposition);
+            if (!game.user.isGM && this.isOwner) return colors.CONTROLLED;
+            else if (this.actor?.hasPlayerOwner) return colors.PARTY;
+            else if (d === CONST.TOKEN_DISPOSITIONS.FRIENDLY) return colors.FRIENDLY;
+            else if (d === CONST.TOKEN_DISPOSITIONS.NEUTRAL) return colors.NEUTRAL;
+            else return colors.HOSTILE;
+        }
+        return null;
+    }
+
 
     //Register Data Importer
     game.settings.registerMenu("battlehammer", "aieImporter", {

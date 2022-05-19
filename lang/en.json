@@ -33,5 +33,24 @@
     "battlehammer.DeleteGroupContent": "Do you wish to delete this group? This will delete the following group and all attributes included in it: ",
 
     "battlehammer.Create": "Create",
-    "battlehammer.New": "New"
+    "battlehammer.New": "New",
+
+    "battlehammer.LabelWounds":"Wounds",
+    "battlehammer.LabelMovement":"M",
+    "battlehammer.LabelMovementHint":"Movement",
+    "battlehammer.LabelWeaponSkill":"WS",
+    "battlehammer.LabelWeaponSkillHint":"Weapon Skill",
+    "battlehammer.LabelBallisticSkill":"BS",
+    "battlehammer.LabelBallisticSkillHint":"Ballistic Skill",
+    "battlehammer.LabelStrength":"S",
+    "battlehammer.LabelStrengthHint":"Strength",
+    "battlehammer.LabelToughness":"T",
+    "battlehammer.LabelToughnessHint":"Toughness",
+    "battlehammer.LabelAttacks":"A",
+    "battlehammer.LabelAttacksHint":"Attacks",
+    "battlehammer.LabelLeadership":"Ld",
+    "battlehammer.LabelLeadershipHint":"Leadership",
+    "battlehammer.LabelSave":"S",
+    "battlehammer.LabelSaveHint":"Save"
+    
 }

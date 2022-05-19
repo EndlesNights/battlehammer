@@ -55,9 +55,9 @@ export default class UnitCoherence {
             const toCheck = new Set(nodeMap[[...unchecked][0]]);
             connectedNodeMaps[i] = new Set([[...unchecked][0]]);
 
-            console.log(toCheck)
-            console.log(unchecked)
-            console.log([...unchecked][0])
+            // console.log(toCheck)
+            // console.log(unchecked)
+            // console.log([...unchecked][0])
             if(toCheck.size === 0){
                 unchecked.delete([...unchecked][0]);
                 
