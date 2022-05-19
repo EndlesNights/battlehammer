@@ -9,41 +9,41 @@
                         </h1>
                         <div class="flexrow">
                                 <div class="resource wounds">
-                                        <span>Wounds:</span>
+                                        <span>{{ localize "battlehammer.LabelWounds" }}:</span>
                                         <input type="number" name="data.details.health.value" value="{{systemData.details.health.value}}"/>
                                         <span> / </span>
                                         <input type="number" name="data.details.health.max" value="{{systemData.details.health.max}}"/>
                                 </div>
                                 <div class="resource">
-                                        <span>M:{{systemData.attributes.movement.value}}</span>
+                                        <span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{systemData.attributes.movement.value}}</span>
                                         <!-- <input type="number" name="data.attributes.movement.value" value="{{systemData.attributes.movement.value}}"/> -->
                                 </div>
                                 <div class="resource">
-                                        <span>WS:{{systemData.attributes.weaponSkill.value}}</span>
+                                        <span title="{{ localize 'battlehammer.LabelWeaponSkillHint' }}">{{ localize "battlehammer.LabelWeaponSkill" }}:{{systemData.attributes.weaponSkill.value}}</span>
                                         <!-- <input type="number" name="data.attributes.weaponSkill.value" value="{{systemData.attributes.weaponSkill.value}}"/> -->
                                 </div>
                                 <div class="resource">
-                                        <span>BS:{{systemData.attributes.ballisticSkill.value}}</span>
+                                        <span title="{{ localize 'battlehammer.LabelBallisticSkillHint' }}">{{ localize "battlehammer.LabelBallisticSkill" }}:{{systemData.attributes.ballisticSkill.value}}</span>
                                         <!-- <input type="number" name="data.attributes.ballisticSkill.value" value="{{systemData.attributes.ballisticSkill.value}}"/> -->
                                 </div>
                                 <div class="resource">
-                                        <span>S:{{systemData.attributes.strength.value}}</span>
+                                        <span title="{{ localize 'battlehammer.LabelStrengthHint' }}">{{ localize "battlehammer.LabelStrength" }}:{{systemData.attributes.strength.value}}</span>
                                         <!-- <input type="number" name="data.attributes.strength.value" value="{{systemData.attributes.strength.value}}"/> -->
                                 </div>
                                 <div class="resource">
-                                        <span>T:{{systemData.attributes.toughness.value}}</span>
+                                        <span title="{{ localize 'battlehammer.LabelToughnessHint' }}">{{ localize "battlehammer.LabelToughness" }}:{{systemData.attributes.toughness.value}}</span>
                                         <!-- <input type="number" name="data.attributes.toughness.value" value="{{systemData.attributes.toughness.value}}"/> -->
                                 </div>
                                 <div class="resource">
-                                        <span>A:{{systemData.attributes.attacks.value}}</span>
+                                        <span title="{{ localize 'battlehammer.LabelAttacksHint' }}">{{ localize "battlehammer.LabelAttacks" }}:{{systemData.attributes.attacks.value}}</span>
                                         <!-- <input type="number" name="data.attributes.attacks.value" value="{{systemData.attributes.attacks.value}}"/> -->
                                 </div>
                                 <div class="resource">
-                                        <span>Ld:{{systemData.attributes.leadership.value}}</span>
+                                        <span title="{{ localize 'battlehammer.LabelLeadershipHint' }}">{{ localize "battlehammer.LabelLeadership" }}:{{systemData.attributes.leadership.value}}</span>
                                         <!-- <input type="number" name="data.attributes.leadership.value" value="{{systemData.attributes.leadership.value}}"/> -->
                                 </div>
                                 <div class="resource">
-                                        <span>Save:{{systemData.attributes.save.value}}</span>
+                                        <span title="{{ localize 'battlehammer.LabelSaveHint' }}">{{ localize "battlehammer.LabelSave" }}:{{systemData.attributes.save.value}}</span>
                                         <!-- <input type="number" name="data.attributes.save.value" value="{{systemData.attributes.save.value}}"/> -->
                                 </div>
                         </div>
