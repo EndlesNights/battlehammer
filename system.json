@@ -26,6 +26,6 @@
     "primaryTokenAttribute": "attributes.health",
     "url": "https://github.com/EndlesNights/battlehammer",
     "manifest": "https://raw.githubusercontent.com/EndlesNights/battlehammer/main/system.json",
-    "download": "",
+    "download": "https://github.com/EndlesNights/battlehammer/archive/v0.1-alpha.zip",
     "license": "LICENSE.txt"
 }
