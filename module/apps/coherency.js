@@ -5,14 +5,13 @@ export default class UnitCoherence {
     }
 
     static getUnitCoherence(){
-        if(!canvas?.tokens?.controlled[0]) return;
+        if(!canvas.activeLayer.placeables.find(t => t._hover)) return;
         
-        const folderID = canvas.tokens.controlled[0].actor.folder.id;
+        const folderID = canvas.activeLayer.placeables.find(t => t._hover).actor.folder.id;
         
         const unit = {}
         for(const t of canvas.tokens.placeables){
             if(t.actor.folder.id == folderID) {
-                // unit[t.id] = {x:t.x, y:t.y, e:t.data.elevation, r:(t.width + t.height)/4}
                 unit[t.id] = {
                     x:t.x + t.width/2,
                     y:t.y + t.height/2,
@@ -36,16 +35,13 @@ export default class UnitCoherence {
                 let tokenElevationOffset = p.e < pT.e ? (p.r/gridSize) *2.2 :( pT.r/gridSize)*2.2;
                 if(Math.hypot(pT.x - p.x, pT.y - p.y)/gridSize <= 2 + (p.r + pT.r)/gridSize && (Math.atan(pT.e - p.e)/gridSize) <=5 + tokenElevationOffset){
                     nodeMap[id].push(idT);
-                    // toDraw.push({x1: pT.x, x2: p.x, y1: pT.y, y2: p.y});
                     toDraw.push({x1: (pT.x + p.x)/2, x2: p.x, y1: (pT.y + p.y)/2, y2: p.y, id:id});
-                    // console.log(nodeMap[id])
                 }
             }
         }
         
         console.log(nodeMap)
         
-        // const toCheck = new Set(nodeMap[Object.keys(nodeMap)[0]]);
         const connectedNodeMaps = [];
         checked.length = 0;
         const unchecked = new Set(Object.keys(unit));
@@ -55,9 +51,6 @@ export default class UnitCoherence {
             const toCheck = new Set(nodeMap[[...unchecked][0]]);
             connectedNodeMaps[i] = new Set([[...unchecked][0]]);
 
-            // console.log(toCheck)
-            // console.log(unchecked)
-            // console.log([...unchecked][0])
             if(toCheck.size === 0){
                 unchecked.delete([...unchecked][0]);
                 
@@ -106,7 +99,6 @@ export default class UnitCoherence {
                        let distance = Math.sqrt( (unit[inner].x - unit[outer].x)**2 + (unit[inner].y - unit[outer].y)**2 + (unit[inner].e - unit[outer].e)**2 )
                         if(distance < clossestNum){
                             clossestNum = distance;
-                            // clossestPoint = [inner, outer];
                             clossestPoint = {x1: unit[inner].x, x2:unit[outer].x, y1: unit[inner].y , y2: unit[outer].y}
                         }
                     }

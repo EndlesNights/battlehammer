@@ -74,7 +74,13 @@ Hooks.once("init", async function() {
         onDown: Keybindings._onTargetUnit,
         reservedModifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]
     });
-
+    game.keybindings.register("battlegammer", "unitCoherency", {
+        name: "Checks Unit Coherency",
+        hint: "Draws visual lines between all models within a unit.",
+        editable: [{key: "KeyF"}],
+        onDown: Keybindings._onDrawUnitCoherency,
+        reservedModifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]
+    });
 
     //Register Data Importer
     game.settings.registerMenu("battlehammer", "aieImporter", {

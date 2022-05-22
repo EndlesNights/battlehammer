@@ -37,4 +37,12 @@ export default class Keybindings{
         hovered.setTarget(!hovered.isTargeted, {releaseOthers: !context.isShift});
         return true;
     }
+
+    static _onDrawUnitCoherency(context){
+        if(context.isShift){
+            for(const e of canvas.drawcoherency){ e.clear()};
+        } else {
+            game.unitCoherence.getUnitCoherence();
+        }
+    }
 }
