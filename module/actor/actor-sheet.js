@@ -29,6 +29,9 @@ export class BattlehammerActorSheet extends ActorSheet {
         context.shorthand = !!game.settings.get("battlehammer", "macroShorthand");
         context.systemData = context.data.data;
         context.dtypes = ATTRIBUTE_TYPES;
+        // context.unit = _getUnitData();
+        context.unit = this.actor.folder.content;
+        console.log(context.unit)
         return context;
     }
 
@@ -113,5 +116,11 @@ export class BattlehammerActorSheet extends ActorSheet {
         formData = EntitySheetHelper.updateAttributes(formData, this.object);
         formData = EntitySheetHelper.updateGroups(formData, this.object);
         return formData;
+    }
+
+    /* -------------------------------------------- */
+
+    _getUnitData(){
+        return this.actor.folder.content;
     }
 }

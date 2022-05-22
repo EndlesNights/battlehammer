@@ -248,6 +248,12 @@
 }
 
 
+.battlehammer.sheet td span{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+
 .system-battlehammer table{
     width: auto;
 }

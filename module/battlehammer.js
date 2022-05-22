@@ -12,6 +12,12 @@ import { preloadHandlebarsTemplates } from "./templates.js";
 import { createBattlehammerMacro } from "./macro.js";
 
 import moveToken from "./overrides/moveToken.js"
+import _refreshBorder from "./overrides/_refreshBorder.js"
+import _getBorderColor from "./overrides/_getBorderColor.js"
+
+import Keybindings from "./keybindings/Keybindings.js"
+
+
 import UnitCoherence from "./apps/coherency.js";
 import Scatter from "./apps/scatter.js";
 
@@ -57,25 +63,17 @@ Hooks.once("init", async function() {
     game.scatter = function(){Scatter()};
 
     Ruler.prototype.moveToken = moveToken;
-    Token.prototype._getBorderColor = function (){
-        if(this._controlled) return CONFIG.Canvas.dispositionColors.CONTROLLED;
-        else if (this._hover) {
-            const ownerID = this.data.flags.battlehammer?.ownerID || null
-            if(ownerID){
-                return Number(`0x${game.users.get(ownerID).data.color.substring(1)}`);
-            }
+    Token.prototype._refreshBorder = _refreshBorder;
+    Token.prototype._getBorderColor = _getBorderColor;
 
-            //from the origonal class;
-            const colors = CONFIG.Canvas.dispositionColors;
-            let d = parseInt(this.data.disposition);
-            if (!game.user.isGM && this.isOwner) return colors.CONTROLLED;
-            else if (this.actor?.hasPlayerOwner) return colors.PARTY;
-            else if (d === CONST.TOKEN_DISPOSITIONS.FRIENDLY) return colors.FRIENDLY;
-            else if (d === CONST.TOKEN_DISPOSITIONS.NEUTRAL) return colors.NEUTRAL;
-            else return colors.HOSTILE;
-        }
-        return null;
-    }
+    //Register keybind for Unit target 
+    game.keybindings.register("battlegammer", "targetUnit", {
+        name: "Target Unit",
+        hint: "Targets all models within a unit.",
+        editable: [{key: "KeyR"}],
+        onDown: Keybindings._onTargetUnit,
+        reservedModifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]
+    });
 
 
     //Register Data Importer

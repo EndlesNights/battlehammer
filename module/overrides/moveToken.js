@@ -3,6 +3,8 @@
   * and such a variable that was intended to fix small offsets of tokens larger than 1x1 on a grid, is causing some unintended 
   * offset movments while the map is set to girdless. 
   * A check has been added to the s2 variable so it will not offset the movement of tokens while the gridType is girdless
+  * 
+  * This issue will likely be fixed in Foundry v10 - Protype 3 (Current v9 - 9.269)
   */
 
 
@@ -20,6 +22,7 @@ export default async function moveToken() {
     // This is important so we can position the token relative to the ruler origin for non-1x1 tokens.
     const origin = canvas.grid.getTopLeft(this.waypoints[0].x, this.waypoints[0].y);
     const s2 = canvas.scene.data.gridType === 0 ? 1 : canvas.dimensions.size / 2; //changed how this value is determined so it will not attemtpe to offset movements while on gridmode
+    //^ This is the only change here ^
     const dx = Math.round((token.data.x - origin[0]) / s2) * s2;
     const dy = Math.round((token.data.y - origin[1]) / s2) * s2;
 
