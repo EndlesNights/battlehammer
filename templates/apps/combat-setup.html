@@ -1,0 +1,23 @@
+<form id="combat-setup-dialo" class="dialog-content">
+	<label>Combat Setup</label>
+	{{#each users as | userData id|}}
+	<div class="form-group">
+		<label>{{userData.name}}</label>
+		<label>{{userData.id}}</label>
+		<select class="attribute-dtype" name="userData.army" data-dtype="String">
+			<option value=""></option>
+			{{#select userData.army}}
+			{{#each ../rootFolders as |folderData|}}
+			<option value="{{folderData.id}}">{{folderData.name}}</option>
+			{{/each}}
+			{{/select}}
+		</select>
+	</div>
+	{{/each}}
+
+	<div class="dialog-buttons">
+		<button class="submit" value="1">Create Combat</button>
+		<button class="cancel">Cancel</button>
+	</div>
+
+</form>

@@ -51,6 +51,15 @@
     "battlehammer.LabelLeadership":"Ld",
     "battlehammer.LabelLeadershipHint":"Leadership",
     "battlehammer.LabelSave":"S",
-    "battlehammer.LabelSaveHint":"Save"
+    "battlehammer.LabelSaveHint":"Save",
     
+
+    "battlehammer.phases.start": "Start Phase",
+    "battlehammer.phases.command": "Command Phase",
+    "battlehammer.phases.move": "Movement Phase",
+    "battlehammer.phases.psychic": "Psychic Phase",
+    "battlehammer.phases.shoot": "Shooting Phase",
+    "battlehammer.phases.charge": "Charge Phase",
+    "battlehammer.phases.fight": "Fight Phase",
+    "battlehammer.phases.morale": "Morale Phase"
 }

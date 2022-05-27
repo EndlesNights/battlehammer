@@ -1,31 +1,34 @@
 {
-    "name": "battlehammer",
-    "title": "Battlehammer",
-    "description": "Turn Based Wargame",
-    "version": "0.0.0",
-    "minimumCoreVersion": "0.8.9",
-    "compatibleCoreVersion": "9",
-    "author": "EndlesNights#9000",
-    "esmodules": ["module/battlehammer.js"],
-    "scripts": [
-        "./lib/jszip/jszip.min.js",
-        "./lib/jxon/jxon.min.js"
-    ],
-    "styles": ["styles/battlehammer.css", "styles/battlescribe.css"],
-    "packs": [],
-    "languages": [
-        {
-            "lang": "en",
-            "name": "English",
-            "path": "lang/en.json"
-        }
-    ],
-    "gridType": 3,
-    "gridDistance": 1,
-    "gridUnits": "inch",
-    "primaryTokenAttribute": "attributes.health",
-    "url": "https://github.com/EndlesNights/battlehammer",
-    "manifest": "https://raw.githubusercontent.com/EndlesNights/battlehammer/main/system.json",
-    "download": "https://github.com/EndlesNights/battlehammer/archive/v0.1-alpha.zip",
-    "license": "LICENSE.txt"
+	"name": "battlehammer",
+	"title": "Battlehammer",
+	"description": "Turn Based Wargame",
+	"version": "0.0.0",
+	"minimumCoreVersion": "0.8.9",
+	"compatibleCoreVersion": "9",
+	"author": "EndlesNights#9000",
+	"dependencies": [
+		{ "name": "lib-wrapper" }
+	],
+	"esmodules": ["module/battlehammer.js"],
+	"scripts": [
+		"./lib/jszip/jszip.min.js",
+		"./lib/jxon/jxon.min.js"
+	],
+	"styles": ["styles/battlehammer.css", "styles/battlescribe.css"],
+	"packs": [],
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "lang/en.json"
+		}
+	],
+	"gridType": 3,
+	"gridDistance": 1,
+	"gridUnits": "inch",
+	"primaryTokenAttribute": "attributes.health",
+	"url": "https://github.com/EndlesNights/battlehammer",
+	"manifest": "https://raw.githubusercontent.com/EndlesNights/battlehammer/main/system.json",
+	"download": "https://github.com/EndlesNights/battlehammer/archive/v0.1-alpha.zip",
+	"license": "LICENSE.txt"
 }

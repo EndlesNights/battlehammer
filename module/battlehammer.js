@@ -23,6 +23,8 @@ import Scatter from "./apps/scatter.js";
 
 import DataImporter from "./data-importer.js"
 
+import {PhaseCombat, PhaseCombatTracker, prepareDerivedData, _getInitiativeFormula} from './combat/combat.js';
+
 /* -------------------------------------------- */
 /*    Foundry VTT Initialization                                    */
 /* -------------------------------------------- */
@@ -41,6 +43,9 @@ Hooks.once("init", async function() {
         formula: "1d20",
         decimals: 2
     };
+
+    CONFIG.Combat.documentClass = PhaseCombat;
+    CONFIG.ui.combat = PhaseCombatTracker;
 
     game.battlehammer = {
         BattlehammerActor,
@@ -65,7 +70,11 @@ Hooks.once("init", async function() {
     Ruler.prototype.moveToken = moveToken;
     Token.prototype._refreshBorder = _refreshBorder;
     Token.prototype._getBorderColor = _getBorderColor;
+    
+    Combatant.prototype.prepareDerivedData = prepareDerivedData;
+    Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 
+    game.system.data.initiative = "1d6";
     //Register keybind for Unit target 
     game.keybindings.register("battlegammer", "targetUnit", {
         name: "Target Unit",
