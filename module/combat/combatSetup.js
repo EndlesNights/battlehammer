@@ -61,30 +61,23 @@ export default class CombatSetup extends FormApplication {
 			}
 			i++
 		}
-		console.log(usersArmyArray)
 		const length = usersArmyArray.length;
 		await this.combat.setFlag('battlehammer', 'playersSize', length);
 
 		for(let index = 0; index < length; index++){
 			const user = usersArmyArray[index];
-			console.log(user);
-			const rootFolder = game.folders.get(user['flags.battlehammer.armyID']);
-			console.log(rootFolder)
-			// continue;
-
-			// const armyUnits = {};
-	
+			const rootFolder = game.folders.get(user['flags.battlehammer.armyID']);	
 			let childrenToScan = [];
 			childrenToScan = childrenToScan.concat(rootFolder.children);
 	
-			// let armyUnits = [];
 			if(rootFolder.content.length){
 				usersArmyArray.push({
 					_id: user.id,
 					name: rootFolder.name,
-					img: user.avatar,
+					img: rootFolder.content[0].thumbnail,
 					"flags.battlehammer.userID":user['flags.battlehammer.userID'],
 					"flags.battlehammer.type": "unit",
+					"flags.battlehammer.hasAction": true,
 					"flags.battlehammer.unitData": {
 						folderId: rootFolder.id,
 						// folderParentName: childrenToScan[0].parentFolder.name,
@@ -92,8 +85,6 @@ export default class CombatSetup extends FormApplication {
 					}
 				});
 			}
-			
-
 	
 			let i = 0;
 			while(childrenToScan.length){
@@ -105,9 +96,10 @@ export default class CombatSetup extends FormApplication {
 				if(childrenToScan[0].content.length) usersArmyArray.push({
 					_id: user.id,
 					name: childrenToScan[0].name,
-					img: user.avatar,
+					img: childrenToScan[0].content[0].thumbnail,
 					"flags.battlehammer.userID":user['flags.battlehammer.userID'],
 					"flags.battlehammer.type": "unit",
+					"flags.battlehammer.hasAction": true,
 					"flags.battlehammer.unitData": {
 						folderId: childrenToScan[0].id,
 						folderParentName: childrenToScan[0].parentFolder.name,
@@ -128,6 +120,7 @@ export default class CombatSetup extends FormApplication {
 			}
 
 		}
+		console.log(usersArmyArray)
 		return this.resolve(usersArmyArray);
 	}
 

@@ -254,6 +254,18 @@
 }
 
 
+.token-initiative .action{
+    color:#3d8ae2
+}
+
+
+.token-initiative {
+    color:#777777
+}
+/* .dnd4eBeta.sheet.actor .inventory .item-controls .item-toggle.active {
+
+} */
+
 .system-battlehammer table{
     width: auto;
 }

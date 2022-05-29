@@ -43,7 +43,7 @@ export class PhaseCombat extends Combat {
 
 	resetPlayerTurns(){
 		for(const player of this.combatants) {
-			if(player.getFlag('battlehammer', 'type')){
+			if(player.getFlag('battlehammer', 'type') === "player"){
 				this.setInitiative(player.id, null)
 			}
 		}
@@ -123,12 +123,20 @@ export class PhaseCombat extends Combat {
 		return folder.children
 	}
 
+	_resetUnitAction(){
+		for(const unit of this.combatants){
+			if(unit.getFlag('battlehammer', 'type') === "unit"){
+				unit.setFlag('battlehammer', "hasAction", true);
+			}
+		}
+	}
+
 	async nextRound() {
 		console.log("nextRound")
 		console.log(this.phase)
 		const playerTurn = this._getPlayerTurn();
+		this._resetUnitAction();
 		if( this.phase === "start" ) {
-			
 			let to_return = await this.update({"flags.battlehammer.phase": "command", turn: 0});
 			this.render();
 			return to_return;
@@ -346,6 +354,10 @@ export class PhaseCombatTracker extends CombatTracker{
 		} else {
 			for(const unit of combat.combatants){
 				if(unit.getFlag("battlehammer", "type") === "unit" && unit.getFlag("battlehammer", "userID") === combat._getCurrentPlayerID()){
+					
+					const hasAction = unit.getFlag("battlehammer", "hasAction");
+					unit.toggleClass = hasAction ? "action" : "";
+					unit.toggleTitle = hasAction ? "Unit Ready to take action" : "Unit has expended its action.";
 					data.turns.push(unit);
 				}
 			}
@@ -361,18 +373,90 @@ export class PhaseCombatTracker extends CombatTracker{
 	// 	console.log("enter?")
 	// }
 
-	// async _onCombatantMouseDown(event) {
-	// 	console.log(event);
-	// 	event.preventDefault();
-	// 	return;
-	// 	super._onCombatantControl(evnet);
-	// }
+	async _onCombatantMouseDown(event) {
+		event.preventDefault();
+		const combatantId = event.currentTarget.dataset.combatantId;
+		const combatant = this.viewed.combatants.get(combatantId);
+		
+		if(event.target.getAttribute('name') === "action-input"){
+			return await combatant.setFlag('battlehammer', "hasAction", !(combatant.getFlag('battlehammer', "hasAction")));
+		}
 
-	// async _onCombatantHoverIn(event) {
-	// 	console.log(event);
-	// 	event.preventDefault();
-	// 	return;
-	// }
+		if(combatant.getFlag("battlehammer", "type") === "unit"){
+			// Handle double-left click to open sheet
+			const now = Date.now();
+			const dt = now - this._clickTime;
+			this._clickTime = now;
+
+			if ( dt <= 250 ){
+				if(this._highlighted[0]) return this._highlighted[0].actor?.sheet.render(true);
+
+				const getActorID = combatant.data.flags.battlehammer.unitData.content[0]._id;
+				return game.actors.get(getActorID).sheet.render(true);				
+			}
+
+			if(this._highlighted && this._highlighted[0] ){
+				if(!event.shiftKey){
+					canvas.tokens.releaseAll();
+				}
+				for(const t of this._highlighted){
+					t.control({releaseOthers: false});
+				}
+				return canvas.animatePan({x: this._highlighted[0].data.x, y: this._highlighted[0].data.y});
+			}
+		}
+		// super._onCombatantControl(event);
+	}
+
+	async _onCombatantHoverIn(event) {
+		event.preventDefault();
+		if ( !canvas.ready ) return;
+		const li = event.currentTarget;
+		const combatant = this.viewed.combatants.get(li.dataset.combatantId);
+
+		if(combatant.getFlag("battlehammer", "type") === "unit"){
+			const content = combatant.getFlag("battlehammer", "unitData").content;
+			const unitID = content[0].folder;
+
+			const tokens = [];
+			for(const token of canvas.scene.tokens){
+				if(token._actor.folder.id === unitID){
+					tokens.push(token.object);
+				}
+			}
+			this._highlightTokensController(tokens, true);
+		}
+
+		super._onCombatantHoverIn(event);
+	}
+
+	_onCombatantHoverOut(event) {
+		event.preventDefault();
+		if ( this._highlighted ) this._highlightTokensController(this._highlighted);
+	}
+
+	_highlightTokensController(tokens, activate=false){
+      // Modify the hover state of objects
+	  let currentHover = null;
+      for ( let o of tokens ) {
+        if ( !o.visible || (o === currentHover) || !o.can(game.user, "hover") ) continue;
+
+        // Mock the PIXI.InteractionEvent
+        const event = new PIXI.InteractionEvent();
+        event.type = activate ? "mouseover" : "mouseout";
+        event.currentTarget = event.target = o;
+
+        // Call the onHover behavior
+        if ( activate ) o._onHoverIn(event, {hoverOutOthers: false});
+        else o._onHoverOut(event);
+      }
+
+	  if(activate){
+		this._highlighted = tokens;
+	  } else {
+		this._highlighted = null;
+	  }
+	}
 
     /* -------------------------------------------- */
   
@@ -388,7 +472,7 @@ export class PhaseCombatTracker extends CombatTracker{
 
 	activateListeners(html) {
 		super.activateListeners(html);
-		console.log("ENTER")
+		console.log("ENTER");
 	}
 
 	_activateCoreListeners(html){
