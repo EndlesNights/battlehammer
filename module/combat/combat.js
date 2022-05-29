@@ -31,13 +31,10 @@ export class PhaseCombat extends Combat {
 
 	_getPlayerTurn(){
 		let playerTurn = this.getFlag("battlehammer", "playerTurn");
-		// console.log(playerTurn == undefined)
 		if( playerTurn == undefined){
 			playerTurn = 0;
 			this.update({"flags.battlehammer.playerTurn": 0});
 		}
-		// console.log(`getPlayer Turn: ${playerTurn}`)
-
 		return playerTurn;
 	}
 
@@ -51,8 +48,7 @@ export class PhaseCombat extends Combat {
 	}
 
 	nextPlayerTurn() {
-		// if(this.getFlag("battlehammer", "playerTurn") + 1 <= this.combatants.size){ //REWORK THIS TO TARGET FLAG
-		if(this.getFlag("battlehammer", "playerTurn") + 1 <= this.getFlag('battlehammer', 'playersSize')){ //REWORK THIS TO TARGET FLAG
+		if(this.getFlag("battlehammer", "playerTurn") + 1 <= this.getFlag('battlehammer', 'playersSize')) { 
 			console.log("ERROR Outside of expected players turns bound!")
 		}
 		return this.update({"flags.battlehammer.playerTurn": this.getFlag("battlehammer", "playerTurn") + 1});
@@ -70,8 +66,6 @@ export class PhaseCombat extends Combat {
 	}
 
 	_getCurrentPlayerName(){
-		console.log(this._getPlayerTurn());
-		console.log(this.turnOrder[this._getPlayerTurn()][1]);
 		return game.users.get(this.turnOrder[this._getPlayerTurn()][1]).name;
 	}
 
@@ -132,8 +126,6 @@ export class PhaseCombat extends Combat {
 	}
 
 	async nextRound() {
-		console.log("nextRound")
-		console.log(this.phase)
 		const playerTurn = this._getPlayerTurn();
 		this._resetUnitAction();
 		if( this.phase === "start" ) {
@@ -172,10 +164,6 @@ export class PhaseCombat extends Combat {
 			return to_return;
 		}
 		else if ( this.phase === "morale" ) {
-			console.log(playerTurn +1)
-			console.log(this.getFlag('battlehammer', 'playersSize'))
-
-			// if(playerTurn +1 === this.combatants.size){
 			if(playerTurn +1 === this.getFlag('battlehammer', 'playersSize')){
 				this.resetPlayerTurns();
 				super.nextRound();
@@ -277,7 +265,6 @@ export class PhaseCombat extends Combat {
 
 	_onUpdate(data, options, userId) {
 		super._onUpdate(data, options, userId);
-		console.log("enter?")
 		if ( foundry.utils.hasProperty(data, "flags.battlehammer.phase") ) this.setupTurns();
 	}
 }
@@ -299,7 +286,6 @@ export class PhaseCombatTracker extends CombatTracker{
 
 	/** @inheritdoc */
 	async getData(options) {
-		// return super.getData(options);
 		const combat = this.viewed;
 		const hasCombat = combat !== null;
 		if(!hasCombat) return super.getData(options);
@@ -310,29 +296,7 @@ export class PhaseCombatTracker extends CombatTracker{
 		const nextId = currentIdx < combats.length - 1 ? combats[currentIdx+1].id : null;
 		const settings = game.settings.get("core", Combat.CONFIG_SETTING);
 
-		console.log(`Phase: ${combat.phase}`);
-		console.log(combat);
-
-		console.log(this);
-		console.log(super.getData(options));
-
 		const data = await super.getData(options);
-		// const data = {
-		// 	user: game.user,
-		// 	combats: combats,
-		// 	currentIndex: currentIdx + 1,
-		// 	combatCount: combats.length,
-		// 	hasCombat: hasCombat,
-		// 	combat,
-		// 	turns: [],
-		// 	previousId,
-		// 	nextId,
-		// 	started: this.started,
-		// 	control: false,
-		// 	settings,
-		// 	linked: combat?.data.scene !== null,
-		// 	labels: {}
-		// }
 		
 		data.phase = combat.phase;
 		if(combat.phase && combat.phase !== "start"){
@@ -362,16 +326,8 @@ export class PhaseCombatTracker extends CombatTracker{
 				}
 			}
 		}
-
-		console.log(data.turns)
-
 		return data;
 	}
-
-	// _onUpdate(data, options, userId) {
-	// 	super._onUpdate(data, options, userId);
-	// 	console.log("enter?")
-	// }
 
 	async _onCombatantMouseDown(event) {
 		event.preventDefault();
@@ -458,45 +414,6 @@ export class PhaseCombatTracker extends CombatTracker{
 	  }
 	}
 
-    /* -------------------------------------------- */
-  
-    /**
-     * Handle a Combatant control toggle
-     * @private
-     * @param {Event} event   The originating mousedown event
-     */
-	// async _onCombatantControl(event) {
-	// 	event.preventDefault();
-	// 	event.stopPropagation();
-	// }
-
-	activateListeners(html) {
-		super.activateListeners(html);
-		console.log("ENTER");
-	}
-
-	_activateCoreListeners(html){
-		super._activateCoreListeners(html);
-		// console.log(html.find(".combat-control"))
-		// html.getElementsByName("Thing")[0].addEventListener('change', activateListeners(html));
-	}
-
-
-	// /** @inheritdoc */
-	// async getData(options) {
-	// 	const context = await super.getData(options);
-	// 	// context.icons = CONFIG.battlehammer.icons;
-
-	// 	context.turns.forEach( turn => {
-	// 		turn.flags = context.combat.combatants.get(turn.id)?.data.flags;
-	// 		turn.model = context.combat.combatants.get(turn.id)?.actor.data.data.model;
-	// 		turn.tint = context.combat.combatants.get(turn.id)?.token.data.tint ?? false;
-	// 	});
-		
-	// 	context.phase_label = game.i18n.localize(`battlehammer.phases.${context.combat?.phase}`) ?? "";
-	// 	context.phase = context.combat?.phase ?? "none";
-	// 	return context;
-	// }
 
 	/** 
 	 * Overrides the handler for new Combat creation request
@@ -552,10 +469,3 @@ Hooks.on("renderCombatTracker",(tracker, html, data) => {
 async function updateInitInput(){
 	game.combat.setInitiative(this.name, this.value);
 }
-
-// Hooks.on("preCreateCombatant", (obj,data,options,userID) =>{
-// 	console.log(obj)
-// 	console.log(data)
-// 	console.log(options)
-// 	console.log(userID)
-// });
