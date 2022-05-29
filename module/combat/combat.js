@@ -14,7 +14,9 @@ export class PhaseCombat extends Combat {
 	get turnOrder() {
 		const turnOrder = [];
 		for(const player of game.combat.combatants){
-			turnOrder.push([player.initiative, player.data.flags.battlehammer?.userID, player.data.flags.battlehammer?.armyID,])
+			if(player.getFlag('battlehammer', 'type') === "player"){
+				turnOrder.push([player.initiative, player.data.flags.battlehammer?.userID, player.data.flags.battlehammer?.armyID,])
+			}
 		}
 		function SortFunc(a,b){
 			if (a[0] === b[0]) {
@@ -29,27 +31,28 @@ export class PhaseCombat extends Combat {
 
 	_getPlayerTurn(){
 		let playerTurn = this.getFlag("battlehammer", "playerTurn");
-		// let playerTurn = game.combat.getFlag("battlehammer", "playerTurn");
-		console.log(playerTurn == undefined)
+		// console.log(playerTurn == undefined)
 		if( playerTurn == undefined){
 			playerTurn = 0;
-			// await this.update({"flags.battlehammer.playerTurn": 0});
 			this.update({"flags.battlehammer.playerTurn": 0});
 		}
-		console.log(`getPlayer Turn: ${playerTurn}`)
+		// console.log(`getPlayer Turn: ${playerTurn}`)
 
 		return playerTurn;
 	}
 
 	resetPlayerTurns(){
-		for(const player of this.combatants){
-			this.setInitiative(player.id, null)
+		for(const player of this.combatants) {
+			if(player.getFlag('battlehammer', 'type')){
+				this.setInitiative(player.id, null)
+			}
 		}
 		return this.update({"flags.battlehammer.playerTurn": 0});
 	}
 
 	nextPlayerTurn() {
-		if(this.getFlag("battlehammer", "playerTurn") + 1 <= this.combatants.size){
+		// if(this.getFlag("battlehammer", "playerTurn") + 1 <= this.combatants.size){ //REWORK THIS TO TARGET FLAG
+		if(this.getFlag("battlehammer", "playerTurn") + 1 <= this.getFlag('battlehammer', 'playersSize')){ //REWORK THIS TO TARGET FLAG
 			console.log("ERROR Outside of expected players turns bound!")
 		}
 		return this.update({"flags.battlehammer.playerTurn": this.getFlag("battlehammer", "playerTurn") + 1});
@@ -62,16 +65,62 @@ export class PhaseCombat extends Combat {
 		return this.update({"flags.battlehammer.playerTurn": this.getFlag("battlehammer", "playerTurn") - 1});
 	}
 
+	_getCurrentPlayerID(){
+		return game.users.get(this.turnOrder[this._getPlayerTurn()][1]).id;
+	}
+
 	_getCurrentPlayerName(){
-		// const playerId = this.getFlag("battlehammer", "playerTurn")[this._getPlayerTurn()][0];
-		// return game.users.get(playerId).name;
 		console.log(this._getPlayerTurn());
 		console.log(this.turnOrder[this._getPlayerTurn()][1]);
 		return game.users.get(this.turnOrder[this._getPlayerTurn()][1]).name;
 	}
 
 	_getCurrentPlayerArmy(){
+		const rootFolder = game.folders.get(this.turnOrder[this._getPlayerTurn()][2]);
+		// const armyUnits = {};
 
+		let childrenToScan = [];
+		childrenToScan = childrenToScan.concat(rootFolder.children);
+
+		let armyUnits = [];
+		if(rootFolder.content.length) armyUnits.push({
+			name: rootFolder.name,
+			folderId: rootFolder.id,
+			content: rootFolder.content
+		});
+		// content = content.concat(rootFolder.content);
+
+		let i = 0;
+		while(childrenToScan.length){
+
+			if(childrenToScan[0].children){
+				childrenToScan = childrenToScan.concat(childrenToScan[0].children);
+			}
+
+			if(childrenToScan[0].content.length) armyUnits.push({
+				name: childrenToScan[0].name,
+				folderId: childrenToScan[0].id,
+				folderParentName: childrenToScan[0].parentFolder.name,
+				content: childrenToScan[0].content
+			});
+			// content = content.concat(childrenToScan[0].content);
+			
+			childrenToScan.shift();
+
+			i++;
+			if(i === 300){
+				console.log("earlyBreak");
+				console.log(childrenToScan)
+				console.log(armyUnits)
+				return armyUnits;
+			}
+		}
+
+		return armyUnits;
+	}
+
+	_getFolderChildren(folder){
+		return folder.children
 	}
 
 	async nextRound() {
@@ -115,7 +164,11 @@ export class PhaseCombat extends Combat {
 			return to_return;
 		}
 		else if ( this.phase === "morale" ) {
-			if(playerTurn +1 === this.combatants.size){
+			console.log(playerTurn +1)
+			console.log(this.getFlag('battlehammer', 'playersSize'))
+
+			// if(playerTurn +1 === this.combatants.size){
+			if(playerTurn +1 === this.getFlag('battlehammer', 'playersSize')){
 				this.resetPlayerTurns();
 				super.nextRound();
 				let to_return = await this.update({"flags.battlehammer.phase": "start", turn: 0});
@@ -279,13 +332,26 @@ export class PhaseCombatTracker extends CombatTracker{
 		} else {
 			data.phase_label = game.i18n.localize(`battlehammer.phases.${combat.phase}`) ?? "";
 		}
+
+		data.turns = [];
+
 		if(combat.phase === "start"){
 			data.startPhase = true;
-			for(const c of combat.combatants){
-				if(c.getFlag("battlehammer", "armyID")) c.data.armyName = game.folders.get(c.getFlag("battlehammer", "armyID")).name
+			for(const player of combat.combatants){
+				if(player.getFlag("battlehammer", "armyID")){
+					player.data.armyName = game.folders.get(player.getFlag("battlehammer", "armyID")).name;
+					data.turns.push(player)
+				}
 			}
-			data.turns = combat.combatants;
+		} else {
+			for(const unit of combat.combatants){
+				if(unit.getFlag("battlehammer", "type") === "unit" && unit.getFlag("battlehammer", "userID") === combat._getCurrentPlayerID()){
+					data.turns.push(unit);
+				}
+			}
 		}
+
+		console.log(data.turns)
 
 		return data;
 	}
@@ -362,18 +428,14 @@ export class PhaseCombatTracker extends CombatTracker{
 		const combat = await cls.create({scene: scene?.id});
 		await combat.activate({render: false});
 
-
 		const playerArmyData = await new Promise(async (resolve) =>{
 			new CombatSetup(resolve, combat).render(true);
 		})
 		console.log(playerArmyData)
 
-		// await combat.setFlag("battlehammer", "playerArmies", playerArmyData);
-
-
 		await combat.createEmbeddedDocuments("Combatant", playerArmyData);
-		console.log(combat)
 
+		console.log(combat)
 	}
 }
 

@@ -85,7 +85,18 @@
             </div>
         </li>
         {{else}}
-            <label>OTHER PHASE</label>
+        <li class="combatant actor directory-item flexrow {{this.css}}" data-combatant-id="{{this.id}}">
+            <img class="token-image" data-src="{{this.img}}" title="{{this.name}}"/>
+            <div class="token-name flexcol">
+                <!-- <label>OTHER PHASE</label> -->
+                <h4>{{this.name}}</h4>
+                <h4>{{this.folderParentName}}</h4>
+            </div>
+            <div class="token-initiative">
+
+            </div>
+        </li>
+
         {{/if}}
         {{/each}}
     </ol>
