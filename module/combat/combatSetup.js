@@ -47,6 +47,7 @@ export default class CombatSetup extends FormApplication {
 
 		const usersArmyArray = []
 		let i = 0;
+		//creat combatants for the players
 		for(const user of game.users){
 			if(formData["userData.army"][i]) { 
 				console.log(user.id);
@@ -58,12 +59,17 @@ export default class CombatSetup extends FormApplication {
 					"flags.battlehammer.userID":user.id,
 					"flags.battlehammer.type": "player"
 				});
+				const folder = game.folders.get(formData["userData.army"][i]);
+				//update the root folder to match the users colour
+				await folder.update({[`color`]: user.data.color});
 			}
 			i++
 		}
 		const length = usersArmyArray.length;
 		await this.combat.setFlag('battlehammer', 'playersSize', length);
 
+		const actorPermissionData = [];
+		//create the combatants for the units
 		for(let index = 0; index < length; index++){
 			const user = usersArmyArray[index];
 			const rootFolder = game.folders.get(user['flags.battlehammer.armyID']);	
@@ -93,20 +99,37 @@ export default class CombatSetup extends FormApplication {
 					childrenToScan = childrenToScan.concat(childrenToScan[0].children);
 				}
 	
-				if(childrenToScan[0].content.length) usersArmyArray.push({
-					_id: user.id,
-					name: childrenToScan[0].name,
-					img: childrenToScan[0].content[0].thumbnail,
-					"flags.battlehammer.userID":user['flags.battlehammer.userID'],
-					"flags.battlehammer.type": "unit",
-					"flags.battlehammer.hasAction": true,
-					"flags.battlehammer.unitData": {
-						folderId: childrenToScan[0].id,
-						folderParentName: childrenToScan[0].parentFolder.name,
-						content: childrenToScan[0].content,
+				if(childrenToScan[0].content.length){
+
+					//set the permsion usership of actors to the corresponding player
+					for(const actor of  childrenToScan[0].content){
+						const permisionData = {};
+
+						//clear any possible old permisions other users might have had
+						for(const users of game.users){
+							permisionData[users.id] = 1;
+						}
+						permisionData[user['flags.battlehammer.userID']] = 3;
+						actorPermissionData.push({
+							_id: actor.id,
+							permission: permisionData
+						});
 					}
-				});
-				// content = content.concat(childrenToScan[0].content);
+					usersArmyArray.push({
+						_id: user.id,
+						name: childrenToScan[0].name,
+						img: childrenToScan[0].content[0].thumbnail,
+						"flags.battlehammer.userID":user['flags.battlehammer.userID'],
+						"flags.battlehammer.type": "unit",
+						"flags.battlehammer.hasAction": true,
+						"flags.battlehammer.unitData": {
+							folderId: childrenToScan[0].id,
+							folderParentName: childrenToScan[0].parentFolder.name,
+							content: childrenToScan[0].content,
+						}
+					});
+				}
+
 				
 				childrenToScan.shift();
 	
@@ -120,6 +143,7 @@ export default class CombatSetup extends FormApplication {
 			}
 
 		}
+		await Actor.updateDocuments(actorPermissionData);
 		console.log(usersArmyArray)
 		return this.resolve(usersArmyArray);
 	}

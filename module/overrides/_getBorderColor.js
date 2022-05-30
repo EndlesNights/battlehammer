@@ -1,7 +1,10 @@
 export default function _getBorderColor() {
     if(this._controlled) return CONFIG.Canvas.dispositionColors.CONTROLLED;
     else if (this._hover) {
-        const ownerID = this.data.flags.battlehammer?.ownerID || null
+
+        //color based off of root folder, which is derived from the controlling player's color
+        return Number(`0x${_getRootFolder(this).data.color.substring(1)}`)
+        const ownerID = this.data.flags.battlehammer?.ownerID || null;
         if(ownerID){
             return Number(`0x${game.users.get(ownerID).data.color.substring(1)}`);
         }
@@ -16,4 +19,13 @@ export default function _getBorderColor() {
         else return colors.HOSTILE;
     }
     return null;
+}
+
+
+function _getRootFolder(token){
+    let baseFolder = token.actor.folder;
+    while(baseFolder.depth != 1){
+        baseFolder = baseFolder.parentFolder;
+    }
+    return baseFolder;
 }

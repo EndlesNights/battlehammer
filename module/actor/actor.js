@@ -237,4 +237,5 @@ export class BattlehammerActor extends Actor {
             }
         }
     }
+
 }

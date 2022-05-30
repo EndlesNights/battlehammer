@@ -119,7 +119,7 @@ export default class DataImporter extends FormApplication {
 				name: primary,
 				type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
 				parent: rootFolderID,
-				color: "#d10000"
+				// color: "#d10000"
 			});
 		}
 	}
@@ -129,7 +129,7 @@ export default class DataImporter extends FormApplication {
 			name: obj.$name,
 			type:  CONST.FOLDER_DOCUMENT_TYPES[0], //"Actor",
 			parent: primaryID,
-			color: "#d10000"
+			// color: "#d10000"
 		})
 	}
 
@@ -170,7 +170,7 @@ export default class DataImporter extends FormApplication {
 				folder: unitFolder.id,
 				data: modelData,
 				permission: {default: 1},
-				token: {actorLink: true, flags:{battlehammer:{ownerID: game.userId}}}
+				// token: {actorLink: true, flags:{battlehammer:{ownerID: game.userId}}}
 			});
 		}
 	}
