@@ -25,6 +25,8 @@ import DataImporter from "./data-importer.js"
 
 import {PhaseCombat, PhaseCombatTracker, prepareDerivedData, _getInitiativeFormula} from './combat/combat.js';
 
+import DropFolder from "./apps/dropFolder.js";
+
 /* -------------------------------------------- */
 /*    Foundry VTT Initialization                                    */
 /* -------------------------------------------- */
@@ -34,6 +36,8 @@ import {PhaseCombat, PhaseCombatTracker, prepareDerivedData, _getInitiativeFormu
  */
 Hooks.once("init", async function() {
     console.log(`Initializing Simple battlehammer System`);
+
+    // DropFolder();
 
     /**
      * Set an initiative formula for the system. This will be updated later.
