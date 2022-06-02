@@ -37,6 +37,15 @@ import DropFolder from "./apps/dropFolder.js";
 Hooks.once("init", async function() {
 	console.log(`Initializing Simple battlehammer System`);
 
+	//Currently disabled the Combat State Button as with how Combat Tracker works in this module, it funcationly does nothing.
+	TokenHUD.prototype._onClickControl = (function(){
+		const original = TokenHUD.prototype._onClickControl;
+		return function() {
+			if (arguments[0].currentTarget.dataset.action === "combat") return console.log("Currently turned off to do nothing.")
+			return original.apply(this, arguments);
+		}
+	})();
+
 	/**
 	 * Set an initiative formula for the system. This will be updated later.
 	 * @type {String}
