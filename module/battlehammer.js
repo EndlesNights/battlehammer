@@ -35,142 +35,140 @@ import DropFolder from "./apps/dropFolder.js";
  * Init hook.
  */
 Hooks.once("init", async function() {
-    console.log(`Initializing Simple battlehammer System`);
+	console.log(`Initializing Simple battlehammer System`);
 
-    // DropFolder();
+	/**
+	 * Set an initiative formula for the system. This will be updated later.
+	 * @type {String}
+	 */
+	CONFIG.Combat.initiative = {
+		formula: "1d20",
+		decimals: 2
+	};
 
-    /**
-     * Set an initiative formula for the system. This will be updated later.
-     * @type {String}
-     */
-    CONFIG.Combat.initiative = {
-        formula: "1d20",
-        decimals: 2
-    };
+	CONFIG.Combat.documentClass = PhaseCombat;
+	CONFIG.ui.combat = PhaseCombatTracker;
 
-    CONFIG.Combat.documentClass = PhaseCombat;
-    CONFIG.ui.combat = PhaseCombatTracker;
+	game.battlehammer = {
+		BattlehammerActor,
+		createBattlehammerMacro,
+		useEntity: foundry.utils.isNewerVersion("9", game.version ?? game.data.version)
+	};
 
-    game.battlehammer = {
-        BattlehammerActor,
-        createBattlehammerMacro,
-        useEntity: foundry.utils.isNewerVersion("9", game.version ?? game.data.version)
-    };
+	// Define custom Document classes
+	CONFIG.Actor.documentClass = BattlehammerActor;
+	CONFIG.Item.documentClass = BattlehammerItem;
 
-    // Define custom Document classes
-    CONFIG.Actor.documentClass = BattlehammerActor;
-    CONFIG.Item.documentClass = BattlehammerItem;
+	// Register sheet application classes
+	Actors.unregisterSheet("core", ActorSheet);
+	Actors.registerSheet("battlehammer", BattlehammerActorSheet, { makeDefault: true });
+	Items.unregisterSheet("core", ItemSheet);
+	Items.registerSheet("battlehammer", BattlehammerItemSheet, { makeDefault: true });
 
-    // Register sheet application classes
-    Actors.unregisterSheet("core", ActorSheet);
-    Actors.registerSheet("battlehammer", BattlehammerActorSheet, { makeDefault: true });
-    Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("battlehammer", BattlehammerItemSheet, { makeDefault: true });
+	// Set up functions so that they can be called from the console under game
+	game.unitCoherence = UnitCoherence;
+	game.scatter = function(){Scatter()};
 
-    // Set up functions so that they can be called from the console under game
-    game.unitCoherence = UnitCoherence;
-    game.scatter = function(){Scatter()};
+	Ruler.prototype.moveToken = moveToken;
+	Token.prototype._refreshBorder = _refreshBorder;
+	Token.prototype._getBorderColor = _getBorderColor;
 
-    Ruler.prototype.moveToken = moveToken;
-    Token.prototype._refreshBorder = _refreshBorder;
-    Token.prototype._getBorderColor = _getBorderColor;
-    
-    Combatant.prototype.prepareDerivedData = prepareDerivedData;
-    Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
+	Combatant.prototype.prepareDerivedData = prepareDerivedData;
+	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 
-    game.system.data.initiative = "1d6";
-    //Register keybind for Unit target 
-    game.keybindings.register("battlegammer", "targetUnit", {
-        name: "Target Unit",
-        hint: "Targets all models within a unit.",
-        editable: [{key: "KeyR"}],
-        onDown: Keybindings._onTargetUnit,
-        reservedModifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]
-    });
-    game.keybindings.register("battlegammer", "unitCoherency", {
-        name: "Checks Unit Coherency",
-        hint: "Draws visual lines between all models within a unit.",
-        editable: [{key: "KeyF"}],
-        onDown: Keybindings._onDrawUnitCoherency,
-        reservedModifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]
-    });
+	game.system.data.initiative = "1d6";
+	//Register keybind for Unit target 
+	game.keybindings.register("battlegammer", "targetUnit", {
+		name: "Target Unit",
+		hint: "Targets all models within a unit.",
+		editable: [{key: "KeyR"}],
+		onDown: Keybindings._onTargetUnit,
+		reservedModifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]
+	});
+	game.keybindings.register("battlegammer", "unitCoherency", {
+		name: "Checks Unit Coherency",
+		hint: "Draws visual lines between all models within a unit.",
+		editable: [{key: "KeyF"}],
+		onDown: Keybindings._onDrawUnitCoherency,
+		reservedModifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]
+	});
 
-    //Register Data Importer
-    game.settings.registerMenu("battlehammer", "aieImporter", {
-        name: "Roster Import",
-        label: "Roster Importer (save settings before using)",
-        hint: "Import data from vmod",
-        icon: "fas fa-file-import",
-        type: DataImporter,
-        restricted: true,
-    });
+	//Register Data Importer
+	game.settings.registerMenu("battlehammer", "aieImporter", {
+		name: "Roster Import",
+		label: "Roster Importer (save settings before using)",
+		hint: "Import data from vmod",
+		icon: "fas fa-file-import",
+		type: DataImporter,
+		restricted: true,
+	});
 
-    game.settings.register("battlehammer", "aieImporter", {
-        name: "Roster Importer",
-        scope: "world",
-        default: {},
-        config: false,
-        default: {},
-        type: Object,
-    });
+	game.settings.register("battlehammer", "aieImporter", {
+		name: "Roster Importer",
+		scope: "world",
+		default: {},
+		config: false,
+		default: {},
+		type: Object,
+	});
 
-    game.settings.register("battlehammer", "importpath", {
-        name: "Import Path (Data/)",
-        hint: "Location where the module will look for Roster rosz files to import",
-        scope: "world",
-        config: true,
-        default: "rosters/import",
-        type: String
-    });
+	game.settings.register("battlehammer", "importpath", {
+		name: "Import Path (Data/)",
+		hint: "Location where the module will look for Roster rosz files to import",
+		scope: "world",
+		config: true,
+		default: "rosters/import",
+		type: String
+	});
 
-    // Register system settings
-    game.settings.register("battlehammer", "macroShorthand", {
-        name: "SETTINGS.SimpleMacroShorthandN",
-        hint: "SETTINGS.SimpleMacroShorthandL",
-        scope: "world",
-        type: Boolean,
-        default: true,
-        config: true
-    });
+	// Register system settings
+	game.settings.register("battlehammer", "macroShorthand", {
+		name: "SETTINGS.SimpleMacroShorthandN",
+		hint: "SETTINGS.SimpleMacroShorthandL",
+		scope: "world",
+		type: Boolean,
+		default: true,
+		config: true
+	});
 
-    // Register initiative setting.
-    game.settings.register("battlehammer", "initFormula", {
-        name: "SETTINGS.SimpleInitFormulaN",
-        hint: "SETTINGS.SimpleInitFormulaL",
-        scope: "world",
-        type: String,
-        default: "1d20",
-        config: true,
-        onChange: formula => _simpleUpdateInit(formula, true)
-    });
+	// Register initiative setting.
+	game.settings.register("battlehammer", "initFormula", {
+		name: "SETTINGS.SimpleInitFormulaN",
+		hint: "SETTINGS.SimpleInitFormulaL",
+		scope: "world",
+		type: String,
+		default: "1d20",
+		config: true,
+		onChange: formula => _simpleUpdateInit(formula, true)
+	});
 
-    // Retrieve and assign the initiative formula setting.
-    const initFormula = game.settings.get("battlehammer", "initFormula");
-    _simpleUpdateInit(initFormula);
+	// Retrieve and assign the initiative formula setting.
+	const initFormula = game.settings.get("battlehammer", "initFormula");
+	_simpleUpdateInit(initFormula);
 
-    /**
-     * Update the initiative formula.
-     * @param {string} formula - Dice formula to evaluate.
-     * @param {boolean} notify - Whether or not to post nofications.
-     */
-    function _simpleUpdateInit(formula, notify = false) {
-        const isValid = Roll.validate(formula);
-        if ( !isValid ) {
-            if ( notify ) ui.notifications.error(`${game.i18n.localize("battlehammer.NotifyInitFormulaInvalid")}: ${formula}`);
-            return;
-        }
-        CONFIG.Combat.initiative.formula = formula;
-    }
+	/**
+	 * Update the initiative formula.
+	 * @param {string} formula - Dice formula to evaluate.
+	 * @param {boolean} notify - Whether or not to post nofications.
+	 */
+	function _simpleUpdateInit(formula, notify = false) {
+		const isValid = Roll.validate(formula);
+		if ( !isValid ) {
+			if ( notify ) ui.notifications.error(`${game.i18n.localize("battlehammer.NotifyInitFormulaInvalid")}: ${formula}`);
+			return;
+		}
+		CONFIG.Combat.initiative.formula = formula;
+	}
 
-    /**
-     * Slugify a string.
-     */
-    Handlebars.registerHelper('slugify', function(value) {
-        return value.slugify({strict: true});
-    });
+	/**
+	 * Slugify a string.
+	 */
+	Handlebars.registerHelper('slugify', function(value) {
+		return value.slugify({strict: true});
+	});
 
-    // Preload template partials
-    await preloadHandlebarsTemplates();
+	// Preload template partials
+	await preloadHandlebarsTemplates();
 });
 
 /**
@@ -182,71 +180,71 @@ Hooks.on("hotbarDrop", (bar, data, slot) => createBattlehammerMacro(data, slot))
  * Adds the actor template context menu.
  */
 Hooks.on("getActorDirectoryEntryContext", (html, options) => {
-    const idAttr = game.battlehammer.useEntity ? "entityId" : "documentId";
-    // Define an actor as a template.
-    options.push({
-        name: game.i18n.localize("battlehammer.DefineTemplate"),
-        icon: '<i class="fas fa-stamp"></i>',
-        condition: li => {
-            const actor = game.actors.get(li.data(idAttr));
-            return !actor.getFlag("battlehammer", "isTemplate");
-        },
-        callback: li => {
-            const actor = game.actors.get(li.data(idAttr));
-            actor.setFlag("battlehammer", "isTemplate", true);
-        }
-    });
+	const idAttr = game.battlehammer.useEntity ? "entityId" : "documentId";
+	// Define an actor as a template.
+	options.push({
+		name: game.i18n.localize("battlehammer.DefineTemplate"),
+		icon: '<i class="fas fa-stamp"></i>',
+		condition: li => {
+			const actor = game.actors.get(li.data(idAttr));
+			return !actor.getFlag("battlehammer", "isTemplate");
+		},
+		callback: li => {
+			const actor = game.actors.get(li.data(idAttr));
+			actor.setFlag("battlehammer", "isTemplate", true);
+		}
+	});
 
-    // Undefine an actor as a template.
-    options.push({
-        name: game.i18n.localize("battlehammer.UnsetTemplate"),
-        icon: '<i class="fas fa-times"></i>',
-        condition: li => {
-            const actor = game.actors.get(li.data(idAttr));
-            return actor.getFlag("battlehammer", "isTemplate");
-        },
-        callback: li => {
-            const actor = game.actors.get(li.data(idAttr));
-            actor.setFlag("battlehammer", "isTemplate", false);
-        }
-    });
+	// Undefine an actor as a template.
+	options.push({
+		name: game.i18n.localize("battlehammer.UnsetTemplate"),
+		icon: '<i class="fas fa-times"></i>',
+		condition: li => {
+			const actor = game.actors.get(li.data(idAttr));
+			return actor.getFlag("battlehammer", "isTemplate");
+		},
+		callback: li => {
+			const actor = game.actors.get(li.data(idAttr));
+			actor.setFlag("battlehammer", "isTemplate", false);
+		}
+	});
 });
 
 /**
  * Adds the item template context menu.
  */
 Hooks.on("getItemDirectoryEntryContext", (html, options) => {
-    const idAttr = game.battlehammer.useEntity ? "entityId" : "documentId";
-    // Define an item as a template.
-    options.push({
-        name: game.i18n.localize("battlehammer.DefineTemplate"),
-        icon: '<i class="fas fa-stamp"></i>',
-        condition: li => {
-            const item = game.items.get(li.data(idAttr));
-            return !item.getFlag("battlehammer", "isTemplate");
-        },
-        callback: li => {
-            const item = game.items.get(li.data(idAttr));
-            item.setFlag("battlehammer", "isTemplate", true);
-        }
-    });
+	const idAttr = game.battlehammer.useEntity ? "entityId" : "documentId";
+	// Define an item as a template.
+	options.push({
+		name: game.i18n.localize("battlehammer.DefineTemplate"),
+		icon: '<i class="fas fa-stamp"></i>',
+		condition: li => {
+			const item = game.items.get(li.data(idAttr));
+			return !item.getFlag("battlehammer", "isTemplate");
+		},
+		callback: li => {
+			const item = game.items.get(li.data(idAttr));
+			item.setFlag("battlehammer", "isTemplate", true);
+		}
+	});
 
-    // Undefine an item as a template.
-    options.push({
-        name: game.i18n.localize("battlehammer.UnsetTemplate"),
-        icon: '<i class="fas fa-times"></i>',
-        condition: li => {
-            const item = game.items.get(li.data(idAttr));
-            return item.getFlag("battlehammer", "isTemplate");
-        },
-        callback: li => {
-            const item = game.items.get(li.data(idAttr));
-            item.setFlag("battlehammer", "isTemplate", false);
-        }
-    });
+	// Undefine an item as a template.
+	options.push({
+		name: game.i18n.localize("battlehammer.UnsetTemplate"),
+		icon: '<i class="fas fa-times"></i>',
+		condition: li => {
+			const item = game.items.get(li.data(idAttr));
+			return item.getFlag("battlehammer", "isTemplate");
+		},
+		callback: li => {
+			const item = game.items.get(li.data(idAttr));
+			item.setFlag("battlehammer", "isTemplate", false);
+		}
+	});
 });
 
 Hooks.on("preCreateScene", (scene, data, options, userID) => {
-    //set default gridType to gridless
-    scene.data.update({gridType: 0});
+	//set default gridType to gridless
+	scene.data.update({gridType: 0});
 });
