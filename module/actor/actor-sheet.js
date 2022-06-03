@@ -30,7 +30,7 @@ export class BattlehammerActorSheet extends ActorSheet {
         context.systemData = context.data.data;
         context.dtypes = ATTRIBUTE_TYPES;
         // context.unit = _getUnitData();
-        context.unit = this.actor.folder.content;
+        context.unit = this.actor.folder?.content || null;
         console.log(context.unit)
         return context;
     }

@@ -257,3 +257,21 @@ Hooks.on("preCreateScene", (scene, data, options, userID) => {
 	//set default gridType to gridless
 	scene.data.update({gridType: 0});
 });
+
+
+Hooks.on("hoverToken", (token, isHovering) => {
+	if(!game.combat?.combatants.size) return;
+	if(isHovering){
+		ui.combat.hoverCombatant(getCombatantHover(token), true)
+	} else {
+		ui.combat.hoverCombatant(getCombatantHover(token), false)
+	}
+})
+
+function getCombatantHover(token){
+	for(const combatant of game.combat.combatants){
+		if(token.actor.folder.id === combatant.data.flags.battlehammer?.unitData?.folderId){
+			return combatant;
+		}
+	}
+}
