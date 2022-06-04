@@ -81,6 +81,45 @@ Hooks.once("init", async function() {
 	Ruler.prototype.moveToken = moveToken;
 	Token.prototype._refreshBorder = _refreshBorder;
 	Token.prototype._getBorderColor = _getBorderColor;
+	Token.prototype._onClickLeft2 = (function (){
+        const original = Token.prototype._onClickLeft2
+        return function () {
+
+			if(arguments[0].data.originalEvent.shiftKey){
+				const folderID = arguments[0].target.actor.folder.id;
+				if(!folderID) return original.apply(this, arguments);
+
+				let unit = new Set();
+				for(const t of canvas.tokens.placeables){
+					if(t.actor.folder.id == folderID) {                  
+						unit.add(t.id);
+					}
+				}
+
+				let userSelected = new Set();
+				for(const t of canvas.tokens.controlled){
+					userSelected.add(t.id)
+				}
+
+				//if the entire unit is already selected, then deselect that entire unit from the contorled selection set
+				if(Array.from(unit).every(v => Array.from(userSelected).includes(v))) {
+					for(const u of unit){
+						canvas.scene.tokens.get(u).object.release();
+					}
+					return;
+				}
+
+				for(const u of unit){
+					canvas.scene.tokens.get(u).object.control({releaseOthers: false});
+				}
+
+				return;
+				console.log("Double Click Shift, add unit to selection, or deselect unit")
+			}
+            return original.apply(this, arguments);
+        }
+    })();
+
 
 	Combatant.prototype.prepareDerivedData = prepareDerivedData;
 	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;

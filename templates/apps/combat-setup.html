@@ -3,7 +3,7 @@
 	{{#each users as | userData id|}}
 	<div class="form-group">
 		<label>{{userData.name}}</label>
-		<label>{{userData.id}}</label>
+		<!-- <label>{{userData.id}}</label> -->
 		<select class="attribute-dtype" name="userData.army" data-dtype="String">
 			<option value=""></option>
 			{{#select userData.army}}

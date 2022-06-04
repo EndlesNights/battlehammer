@@ -329,6 +329,7 @@ export class PhaseCombatTracker extends CombatTracker{
 		return data;
 	}
 
+	 
 	async _onCombatantMouseDown(event) {
 		event.preventDefault();
 		const combatantId = event.currentTarget.dataset.combatantId;
@@ -351,6 +352,7 @@ export class PhaseCombatTracker extends CombatTracker{
 				return game.actors.get(getActorID).sheet.render(true);				
 			}
 
+			//click on combatants to select controler
 			if(this._highlighted && this._highlighted[0] ){
 				if(!event.shiftKey){
 					canvas.tokens.releaseAll();

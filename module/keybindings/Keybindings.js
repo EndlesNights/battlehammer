@@ -1,4 +1,6 @@
 export default class Keybindings{
+
+    //handles target all tokens within a unit with the r key
     static _onTargetUnit(context){
         if ( !canvas.ready ) return false;
         const layer = canvas.activeLayer;
@@ -17,11 +19,12 @@ export default class Keybindings{
             }
 
             let userTargets = new Set();
-            if(context.isShift){              
-                for(const t of game.user.targets){
-                    userTargets.add(t.id)
-                }
-                //if the entire unit is already selected, then deselect that entire unit from the targets set
+            for(const t of game.user.targets){
+                userTargets.add(t.id)
+            }
+
+            if(context.isShift) {
+                //if the entire unit is already targted, then de-target that entire unit from the targets set
                 if(Array.from(unit).every(v => Array.from(userTargets).includes(v))) {
                     for(const u of unit){
                         userTargets.delete(u)
@@ -29,8 +32,16 @@ export default class Keybindings{
                     game.user.updateTokenTargets(userTargets);
                     return true;
                 }
+                game.user.updateTokenTargets(Array.from(unit).concat(Array.from(userTargets)));
+                return true;
             }
-            game.user.updateTokenTargets(Array.from(unit).concat(Array.from(userTargets)));
+            
+            //if the entire unit is already targted, then de-target everything
+            if(Array.from(unit).every(v => Array.from(userTargets).includes(v))) {
+                game.user.updateTokenTargets();
+                return true
+            }
+            game.user.updateTokenTargets(Array.from(unit));
             return true;
         }
 
