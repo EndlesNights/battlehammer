@@ -53,6 +53,10 @@ export class BattlehammerActorSheet extends ActorSheet {
         html.find(".item-control").click(this._onItemControl.bind(this));
         html.find(".items .rollable").on("click", this._onItemRoll.bind(this));
 
+
+
+        html.find(".getSheet").on("click", this._onGetSheet.bind(this));
+
         // Add draggable for Macro creation
         html.find(".attributes a.attribute-roll").each((i, a) => {
             a.setAttribute("draggable", true);
@@ -108,6 +112,20 @@ export class BattlehammerActorSheet extends ActorSheet {
         });
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Listen for getting quick acsees to other sheets
+     * @param {MouseEvent} event        The originating left click event
+     */
+    _onGetSheet(event){
+        const actorID = event.currentTarget?.dataset?.actorId;
+        if(actorID && this.actor.id !== actorID){
+            game.actors.get(actorID)?.sheet.render(true);
+            if(event.shiftKey) {return;}
+            this.close();
+        }
+    }
     /* -------------------------------------------- */
 
     /** @inheritdoc */

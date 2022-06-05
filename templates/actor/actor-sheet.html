@@ -70,7 +70,7 @@
                 <span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{model.data.data.movement.value}}</span>
             </div> -->
             <tr>
-                <th><label>{{model.name}}:</label></th>
+                <th><label><a class="rollable getSheet" data-actor-id="{{model.id}}">{{model.name}}:</label></a></th>
                 <td><span>{{ localize "battlehammer.LabelWounds" }}:{{model.data.data.details.health.value}}/{{model.data.data.details.health.max}}</span></td>
                 <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{model.data.data.attributes.movement.value}}</span></td>
                 <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelWeaponSkill" }}:{{model.data.data.attributes.weaponSkill.value}}</span></td>

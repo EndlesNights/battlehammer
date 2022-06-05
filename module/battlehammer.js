@@ -101,6 +101,8 @@ Hooks.once("init", async function() {
 					userSelected.add(t.id)
 				}
 
+				// Add the click on token to the selection, since as part of double clicking, you unselect the token
+				userSelected.add(arguments[0].target.id);
 				//if the entire unit is already selected, then deselect that entire unit from the contorled selection set
 				if(Array.from(unit).every(v => Array.from(userSelected).includes(v))) {
 					for(const u of unit){
