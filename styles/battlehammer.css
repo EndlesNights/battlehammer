@@ -74,6 +74,20 @@
     height: 100%;
     overflow-y: auto;
 }
+
+.battlehammer .table-container{
+    width: 300px;
+    float:left;
+}
+.battlehammer .editordiv{
+    height: 100%;
+    overflow-y: auto;
+    width: calc(100% - 576px);
+    overflow: hidden;
+    border: 1px solid black;
+
+}
+
 .battlehammer .editor,
 .battlehammer .editor-content {
     height: 100%;

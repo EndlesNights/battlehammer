@@ -66,6 +66,8 @@ export default class CombatSetup extends FormApplication {
 			i++
 		}
 		const length = usersArmyArray.length;
+		// await this.combat.update({["permission.default"]: CONST.ENTITY_PERMISSIONS.OWNER});
+		
 		await this.combat.setFlag('battlehammer', 'playersSize', length);
 
 		const actorPermissionData = [];

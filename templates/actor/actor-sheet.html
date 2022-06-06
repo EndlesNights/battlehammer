@@ -63,27 +63,29 @@
         {{!-- Biography Tab --}}
         <div class="tab description" data-group="primary" data-tab="description">
             <!-- Insert Info About Unit here? -->
-            <table>
-            {{#each unit as |model|}}
-            <!-- <div>
-                <label>{{model.name}}:</label>
-                <span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{model.data.data.movement.value}}</span>
-            </div> -->
-            <tr>
-                <th><label><a class="rollable getSheet" data-actor-id="{{model.id}}">{{model.name}}:</label></a></th>
-                <td><span>{{ localize "battlehammer.LabelWounds" }}:{{model.data.data.details.health.value}}/{{model.data.data.details.health.max}}</span></td>
-                <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{model.data.data.attributes.movement.value}}</span></td>
-                <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelWeaponSkill" }}:{{model.data.data.attributes.weaponSkill.value}}</span></td>
-                <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelBallisticSkill" }}:{{model.data.data.attributes.ballisticSkill.value}}</span></td>
-                <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelStrength" }}:{{model.data.data.attributes.strength.value}}</span></td>
-                <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelToughness" }}:{{model.data.data.attributes.toughness.value}}</span></td>
-                <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelAttacks" }}:{{model.data.data.attributes.attacks.value}}</span></td>
-                <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelLeadership" }}:{{model.data.data.attributes.leadership.value}}</span></td>
-                <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelSave" }}:{{model.data.data.attributes.save.value}}</span></td>
-            </tr>
-            {{/each}}
-            </table>
-            {{editor content=systemData.biography target="data.biography" button=true owner=owner editable=editable rollData=rollData}}
+            <div class="table-container" style="width:576px; margin: 0;">
+                <table>
+                {{#each unit as |model|}}
+                <tr>
+                    <th><label><a class="rollable getSheet" data-actor-id="{{model.id}}">{{model.name}}:</label></a></th>
+                    <td><span>{{ localize "battlehammer.LabelWounds" }}:{{model.data.data.details.health.value}}/{{model.data.data.details.health.max}}</span></td>
+                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{model.data.data.attributes.movement.value}}</span></td>
+                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelWeaponSkill" }}:{{model.data.data.attributes.weaponSkill.value}}</span></td>
+                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelBallisticSkill" }}:{{model.data.data.attributes.ballisticSkill.value}}</span></td>
+                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelStrength" }}:{{model.data.data.attributes.strength.value}}</span></td>
+                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelToughness" }}:{{model.data.data.attributes.toughness.value}}</span></td>
+                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelAttacks" }}:{{model.data.data.attributes.attacks.value}}</span></td>
+                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelLeadership" }}:{{model.data.data.attributes.leadership.value}}</span></td>
+                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelSave" }}:{{model.data.data.attributes.save.value}}</span></td>
+                </tr>
+                {{/each}}
+                </table>
+            </div>
+            <div class="editordiv flexrow">
+
+                {{editor content=systemData.biography target="data.biography" button=true owner=owner editable=editable rollData=rollData}}
+            </div>
+
         </div>
 
         {{!-- Owned Items Tab --}}

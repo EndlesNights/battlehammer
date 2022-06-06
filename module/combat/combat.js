@@ -1,8 +1,10 @@
 import CombatSetup from "./combatSetup.js";
 
 export class PhaseCombat extends Combat {
-	constructor(...args) {
-		super(...args);
+	constructor(data, context) {
+		super(data, context);
+		// this.data.permission = {default:3};
+		// this.permission = {default:3};
 	}
 	get phase() {
 		return this.getFlag("battlehammer", "phase") || "start";
@@ -134,6 +136,9 @@ export class PhaseCombat extends Combat {
 			return to_return;
 		}
 		else if(this.phase === "command"){
+			console.log(this)
+			console.log("one")
+
 			let to_return = await this.update({"flags.battlehammer.phase": "move", turn: 0});
 			this.render();
 			return to_return; 
@@ -186,7 +191,7 @@ export class PhaseCombat extends Combat {
 		else {
 		  await this.setFlag("battlehammer", "phase", "start"); // Back to the assign phase
 		  return super.nextRound()
-		} 
+		}
 	}
 
 	async previousRound(){
@@ -326,9 +331,13 @@ export class PhaseCombatTracker extends CombatTracker{
 				}
 			}
 		}
+
+		if(combat.turnOrder.length){
+			data.control = (combat._getCurrentPlayerID() === game.userId);
+			// data.control = true;
+		}
 		return data;
 	}
-
 	 
 	async _onCombatantMouseDown(event) {
 		event.preventDefault();
