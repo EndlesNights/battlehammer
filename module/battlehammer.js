@@ -130,6 +130,7 @@ Hooks.once("init", async function() {
 	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 
 	game.system.data.initiative = "1d6";
+
 	//Register keybind for Unit target 
 	game.keybindings.register("battlegammer", "targetUnit", {
 		name: "Target Unit",
@@ -138,6 +139,8 @@ Hooks.once("init", async function() {
 		onDown: Keybindings._onTargetUnit,
 		reservedModifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]
 	});
+
+	//Register keybind for Coherency Check
 	game.keybindings.register("battlegammer", "unitCoherency", {
 		name: "Checks Unit Coherency",
 		hint: "Draws visual lines between all models within a unit.",
@@ -319,3 +322,56 @@ function getCombatantHover(token){
 		}
 	}
 }
+
+// While holding down shift, apply effect from all other actors within a Unit 
+Hooks.on("preCreateActiveEffect", async (effect, data, context, user) => {
+	if(!game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)) return;
+	if(data.options?.linkGenerated) return;
+
+	for(const actor of effect.parent.folder.content){
+		if(actor.id === effect.parent.id){
+			continue;
+		}
+		let duplicateCheck = false;
+		if(actor.effects.size){
+
+			for(const effect of actor.effects.contents){
+				// if(effect.data.flags.core.statusId === data.flags.core.statusId){
+				if(effect.data.label === data.label){
+					duplicateCheck = true;
+					break;
+				}
+			}
+			if(duplicateCheck) continue;
+		}
+
+		actor.createEmbeddedDocuments("ActiveEffect", [{
+			_id: data.label,
+			label: data.label,
+			icon: data.icon,
+			flags: data.flags,
+			changes: [],
+			options: {linkGenerated:true}
+		}]);		
+	}
+});
+
+// While holding down shift, delete effect from all other actors within a Unit 
+Hooks.on("preDeleteActiveEffect", async (effect, context, user) => {
+
+	if(!game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT)) return;
+	if(context.linkGenerated) return;
+
+	for(const actor of effect.parent.folder.content){
+		if(actor.id === effect.parent.id){
+			continue;
+		}
+		if(!actor.effects.size) continue;
+		for(const effect of actor.effects.contents){
+			if(effect.data.label === effect.data.label){
+				effect.delete({linkGenerated:true});
+				break;
+			}
+		}
+	}
+});
