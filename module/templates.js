@@ -5,13 +5,13 @@
  */
 export const preloadHandlebarsTemplates = async function() {
 
-    // Define template paths to load
-    const templatePaths = [
-        // Attribute list partial.
-        "systems/battlehammer/templates/parts/sheet-attributes.html",
-        "systems/battlehammer/templates/parts/sheet-groups.html"
-    ];
+	// Define template paths to load
+	const templatePaths = [
+		// Attribute list partial.
+		"systems/battlehammer/templates/parts/sheet-attributes.html",
+		"systems/battlehammer/templates/parts/sheet-groups.html"
+	];
 
-    // Load the template parts
-    return loadTemplates(templatePaths);
+	// Load the template parts
+	return loadTemplates(templatePaths);
 };

@@ -1,168 +1,168 @@
 <form class="flexcol {{cssClass}}" autocomplete="off">
 
-    {{!-- Sheet Header --}}
-    <header class="sheet-header">
-        <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" height="100" width="100" />
-        <div class="header-fields">
-            <h1 class="charname">
-                <input name="name" type="text" value="{{data.name}}" placeholder="Name" />
-            </h1>
-            <div class="flexrow">
-                <div class="resource wounds">
-                    <span>{{ localize "battlehammer.LabelWounds" }}:</span>
-                    <input type="number" name="data.details.health.value" value="{{systemData.details.health.value}}"/>
-                    <span> / </span>
-                    <input type="number" name="data.details.health.max" value="{{systemData.details.health.max}}"/>
-                </div>
-                <div class="resource">
-                    <span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{systemData.attributes.movement.value}}</span>
-                    <!-- <input type="number" name="data.attributes.movement.value" value="{{systemData.attributes.movement.value}}"/> -->
-                </div>
-                <div class="resource">
-                    <span title="{{ localize 'battlehammer.LabelWeaponSkillHint' }}">{{ localize "battlehammer.LabelWeaponSkill" }}:{{systemData.attributes.weaponSkill.value}}</span>
-                    <!-- <input type="number" name="data.attributes.weaponSkill.value" value="{{systemData.attributes.weaponSkill.value}}"/> -->
-                </div>
-                <div class="resource">
-                    <span title="{{ localize 'battlehammer.LabelBallisticSkillHint' }}">{{ localize "battlehammer.LabelBallisticSkill" }}:{{systemData.attributes.ballisticSkill.value}}</span>
-                    <!-- <input type="number" name="data.attributes.ballisticSkill.value" value="{{systemData.attributes.ballisticSkill.value}}"/> -->
-                </div>
-                <div class="resource">
-                    <span title="{{ localize 'battlehammer.LabelStrengthHint' }}">{{ localize "battlehammer.LabelStrength" }}:{{systemData.attributes.strength.value}}</span>
-                    <!-- <input type="number" name="data.attributes.strength.value" value="{{systemData.attributes.strength.value}}"/> -->
-                </div>
-                <div class="resource">
-                    <span title="{{ localize 'battlehammer.LabelToughnessHint' }}">{{ localize "battlehammer.LabelToughness" }}:{{systemData.attributes.toughness.value}}</span>
-                    <!-- <input type="number" name="data.attributes.toughness.value" value="{{systemData.attributes.toughness.value}}"/> -->
-                </div>
-                <div class="resource">
-                    <span title="{{ localize 'battlehammer.LabelAttacksHint' }}">{{ localize "battlehammer.LabelAttacks" }}:{{systemData.attributes.attacks.value}}</span>
-                    <!-- <input type="number" name="data.attributes.attacks.value" value="{{systemData.attributes.attacks.value}}"/> -->
-                </div>
-                <div class="resource">
-                    <span title="{{ localize 'battlehammer.LabelLeadershipHint' }}">{{ localize "battlehammer.LabelLeadership" }}:{{systemData.attributes.leadership.value}}</span>
-                    <!-- <input type="number" name="data.attributes.leadership.value" value="{{systemData.attributes.leadership.value}}"/> -->
-                </div>
-                <div class="resource">
-                    <span title="{{ localize 'battlehammer.LabelSaveHint' }}">{{ localize "battlehammer.LabelSave" }}:{{systemData.attributes.save.value}}</span>
-                    <!-- <input type="number" name="data.attributes.save.value" value="{{systemData.attributes.save.value}}"/> -->
-                </div>
-            </div>
-        </div>
-    </header>
+	{{!-- Sheet Header --}}
+	<header class="sheet-header">
+		<img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" height="100" width="100" />
+		<div class="header-fields">
+			<h1 class="charname">
+				<input name="name" type="text" value="{{data.name}}" placeholder="Name" />
+			</h1>
+			<div class="flexrow">
+				<div class="resource wounds">
+					<span>{{ localize "battlehammer.LabelWounds" }}:</span>
+					<input type="number" name="data.details.health.value" value="{{systemData.details.health.value}}"/>
+					<span> / </span>
+					<input type="number" name="data.details.health.max" value="{{systemData.details.health.max}}"/>
+				</div>
+				<div class="resource">
+					<span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{systemData.attributes.movement.value}}</span>
+					<!-- <input type="number" name="data.attributes.movement.value" value="{{systemData.attributes.movement.value}}"/> -->
+				</div>
+				<div class="resource">
+					<span title="{{ localize 'battlehammer.LabelWeaponSkillHint' }}">{{ localize "battlehammer.LabelWeaponSkill" }}:{{systemData.attributes.weaponSkill.value}}</span>
+					<!-- <input type="number" name="data.attributes.weaponSkill.value" value="{{systemData.attributes.weaponSkill.value}}"/> -->
+				</div>
+				<div class="resource">
+					<span title="{{ localize 'battlehammer.LabelBallisticSkillHint' }}">{{ localize "battlehammer.LabelBallisticSkill" }}:{{systemData.attributes.ballisticSkill.value}}</span>
+					<!-- <input type="number" name="data.attributes.ballisticSkill.value" value="{{systemData.attributes.ballisticSkill.value}}"/> -->
+				</div>
+				<div class="resource">
+					<span title="{{ localize 'battlehammer.LabelStrengthHint' }}">{{ localize "battlehammer.LabelStrength" }}:{{systemData.attributes.strength.value}}</span>
+					<!-- <input type="number" name="data.attributes.strength.value" value="{{systemData.attributes.strength.value}}"/> -->
+				</div>
+				<div class="resource">
+					<span title="{{ localize 'battlehammer.LabelToughnessHint' }}">{{ localize "battlehammer.LabelToughness" }}:{{systemData.attributes.toughness.value}}</span>
+					<!-- <input type="number" name="data.attributes.toughness.value" value="{{systemData.attributes.toughness.value}}"/> -->
+				</div>
+				<div class="resource">
+					<span title="{{ localize 'battlehammer.LabelAttacksHint' }}">{{ localize "battlehammer.LabelAttacks" }}:{{systemData.attributes.attacks.value}}</span>
+					<!-- <input type="number" name="data.attributes.attacks.value" value="{{systemData.attributes.attacks.value}}"/> -->
+				</div>
+				<div class="resource">
+					<span title="{{ localize 'battlehammer.LabelLeadershipHint' }}">{{ localize "battlehammer.LabelLeadership" }}:{{systemData.attributes.leadership.value}}</span>
+					<!-- <input type="number" name="data.attributes.leadership.value" value="{{systemData.attributes.leadership.value}}"/> -->
+				</div>
+				<div class="resource">
+					<span title="{{ localize 'battlehammer.LabelSaveHint' }}">{{ localize "battlehammer.LabelSave" }}:{{systemData.attributes.save.value}}</span>
+					<!-- <input type="number" name="data.attributes.save.value" value="{{systemData.attributes.save.value}}"/> -->
+				</div>
+			</div>
+		</div>
+	</header>
 
-    {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="description">Description</a>
-        <a class="item" data-tab="items">Items</a>
-        <a class="item" data-tab="attributes">Attributes</a>
-    </nav>
+	{{!-- Sheet Tab Navigation --}}
+	<nav class="sheet-tabs tabs" data-group="primary">
+		<a class="item" data-tab="description">Description</a>
+		<a class="item" data-tab="items">Items</a>
+		<a class="item" data-tab="attributes">Attributes</a>
+	</nav>
 
-    {{!-- Sheet Body --}}
-    <section class="sheet-body">
+	{{!-- Sheet Body --}}
+	<section class="sheet-body">
 
-        {{!-- Biography Tab --}}
-        <div class="tab description" data-group="primary" data-tab="description">
-            <!-- Insert Info About Unit here? -->
-            <div class="table-container" style="width:576px; margin: 0;">
-                <table>
-                {{#each unit as |model|}}
-                <tr>
-                    <th><label><a class="rollable getSheet" data-actor-id="{{model.id}}">{{model.name}}:</label></a></th>
-                    <td><span>{{ localize "battlehammer.LabelWounds" }}:{{model.data.data.details.health.value}}/{{model.data.data.details.health.max}}</span></td>
-                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{model.data.data.attributes.movement.value}}</span></td>
-                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelWeaponSkill" }}:{{model.data.data.attributes.weaponSkill.value}}</span></td>
-                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelBallisticSkill" }}:{{model.data.data.attributes.ballisticSkill.value}}</span></td>
-                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelStrength" }}:{{model.data.data.attributes.strength.value}}</span></td>
-                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelToughness" }}:{{model.data.data.attributes.toughness.value}}</span></td>
-                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelAttacks" }}:{{model.data.data.attributes.attacks.value}}</span></td>
-                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelLeadership" }}:{{model.data.data.attributes.leadership.value}}</span></td>
-                    <td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelSave" }}:{{model.data.data.attributes.save.value}}</span></td>
-                </tr>
-                {{/each}}
-                </table>
-            </div>
-            <div class="editordiv flexrow">
+		{{!-- Biography Tab --}}
+		<div class="tab description" data-group="primary" data-tab="description">
+			<!-- Insert Info About Unit here? -->
+			<div class="table-container" style="width:576px; margin: 0;">
+				<table>
+				{{#each unit as |model|}}
+				<tr>
+					<th><label><a class="rollable getSheet" data-actor-id="{{model.id}}">{{model.name}}:</label></a></th>
+					<td><span>{{ localize "battlehammer.LabelWounds" }}:{{model.data.data.details.health.value}}/{{model.data.data.details.health.max}}</span></td>
+					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{model.data.data.attributes.movement.value}}</span></td>
+					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelWeaponSkill" }}:{{model.data.data.attributes.weaponSkill.value}}</span></td>
+					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelBallisticSkill" }}:{{model.data.data.attributes.ballisticSkill.value}}</span></td>
+					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelStrength" }}:{{model.data.data.attributes.strength.value}}</span></td>
+					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelToughness" }}:{{model.data.data.attributes.toughness.value}}</span></td>
+					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelAttacks" }}:{{model.data.data.attributes.attacks.value}}</span></td>
+					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelLeadership" }}:{{model.data.data.attributes.leadership.value}}</span></td>
+					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelSave" }}:{{model.data.data.attributes.save.value}}</span></td>
+				</tr>
+				{{/each}}
+				</table>
+			</div>
+			<div class="editordiv flexrow">
 
-                {{editor content=systemData.biography target="data.biography" button=true owner=owner editable=editable rollData=rollData}}
-            </div>
+				{{editor content=systemData.biography target="data.biography" button=true owner=owner editable=editable rollData=rollData}}
+			</div>
 
-        </div>
+		</div>
 
-        {{!-- Owned Items Tab --}}
-        <div class="tab items" data-group="primary" data-tab="items">
-            <ol class="item-list">
-                {{#each data.items as |item id|}}
-                <li class="item flexrow" data-item-id="{{item._id}}">
-                    <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
-                    <h4 class="item-name">{{item.name}}</h4>
-                    {{!-- Iterate through all attributes on the item and output buttons for any that are formula. --}}
-                    <div class="item-buttons">
-                        {{#each item.data.attributes as |itemAttr key|}}
-                        {{#if itemAttr.dtype}}
-                            {{#if itemAttr.isFormula}}
-                                {{!-- Use the items.name.key format for shorthand. --}}
-                                {{#if ../../shorthand}}
-                                <button class="item-button rollable" data-roll="@items.{{slugify item.name}}.{{key}}" data-label="{{ itemAttr.label }}"
-                                    title="{{itemAttr.value}}">{{itemAttr.label}}</button>
-                                {{!-- Use the items.name.attributes.key.value format otherwise. --}}
-                                {{else}}
-                                <button class="item-button rollable"
-                                    data-roll="@items.{{slugify item.name}}.attributes.{{key}}.value" data-label="{{ itemAttr.label }}"
-                                    title="{{itemAttr.value}}">{{itemAttr.label}}</button>
-                                {{/if}}
-                            {{/if}}
-                        {{else}}
-                            {{#each itemAttr as |itemGroupedAttr groupedKey|}}
-                                {{#if itemGroupedAttr.isFormula}}
-                                    {{!-- Use the items.name.key format for shorthand. --}}
-                                    {{#if ../../../shorthand}}
-                                    <button class="item-button rollable" data-roll="@items.{{slugify item.name}}.{{key}}.{{groupedKey}}" data-label="{{ itemGroupedAttr.label }}"
-                                        title="{{itemGroupedAttr.value}}">{{itemGroupedAttr.label}}</button>
-                                    {{!-- Use the items.name.attributes.key.value format otherwise. --}}
-                                    {{else}}
-                                    <button class="item-button rollable"
-                                        data-roll="@items.{{slugify item.name}}.attributes.{{key}}.{{groupedKey}}.value" data-label="{{ itemGroupedAttr.label }}"
-                                        title="{{itemGroupedAttr.value}}">{{itemGroupedAttr.label}}</button>
-                                    {{/if}}
-                                {{/if}}
-                            {{/each}}
-                        {{/if}}
-                        {{/each}}
-                    </div>
-                    <div class="item-controls">
-                        <a class="item-control" title="{{ localize "battlehammer.ItemEdit" }}" data-action="edit"><i class="fas fa-edit"></i></a>
-                        <a class="item-control" title="{{ localize "battlehammer.ItemDelete" }}" data-action="delete"><i class="fas fa-trash"></i></a>
-                    </div>
-                </li>
-                {{/each}}
-            </ol>
-            <p>
-                <a class="item-control" title="{{ localize "battlehammer.ItemCreate" }}" data-action="create"><i class="fas fa-plus"></i> {{ localize "battlehammer.ItemCreate" }}</a>
-            </p>
-        </div>
+		{{!-- Owned Items Tab --}}
+		<div class="tab items" data-group="primary" data-tab="items">
+			<ol class="item-list">
+				{{#each data.items as |item id|}}
+				<li class="item flexrow" data-item-id="{{item._id}}">
+					<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+					<h4 class="item-name">{{item.name}}</h4>
+					{{!-- Iterate through all attributes on the item and output buttons for any that are formula. --}}
+					<div class="item-buttons">
+						{{#each item.data.attributes as |itemAttr key|}}
+						{{#if itemAttr.dtype}}
+							{{#if itemAttr.isFormula}}
+								{{!-- Use the items.name.key format for shorthand. --}}
+								{{#if ../../shorthand}}
+								<button class="item-button rollable" data-roll="@items.{{slugify item.name}}.{{key}}" data-label="{{ itemAttr.label }}"
+									title="{{itemAttr.value}}">{{itemAttr.label}}</button>
+								{{!-- Use the items.name.attributes.key.value format otherwise. --}}
+								{{else}}
+								<button class="item-button rollable"
+									data-roll="@items.{{slugify item.name}}.attributes.{{key}}.value" data-label="{{ itemAttr.label }}"
+									title="{{itemAttr.value}}">{{itemAttr.label}}</button>
+								{{/if}}
+							{{/if}}
+						{{else}}
+							{{#each itemAttr as |itemGroupedAttr groupedKey|}}
+								{{#if itemGroupedAttr.isFormula}}
+									{{!-- Use the items.name.key format for shorthand. --}}
+									{{#if ../../../shorthand}}
+									<button class="item-button rollable" data-roll="@items.{{slugify item.name}}.{{key}}.{{groupedKey}}" data-label="{{ itemGroupedAttr.label }}"
+										title="{{itemGroupedAttr.value}}">{{itemGroupedAttr.label}}</button>
+									{{!-- Use the items.name.attributes.key.value format otherwise. --}}
+									{{else}}
+									<button class="item-button rollable"
+										data-roll="@items.{{slugify item.name}}.attributes.{{key}}.{{groupedKey}}.value" data-label="{{ itemGroupedAttr.label }}"
+										title="{{itemGroupedAttr.value}}">{{itemGroupedAttr.label}}</button>
+									{{/if}}
+								{{/if}}
+							{{/each}}
+						{{/if}}
+						{{/each}}
+					</div>
+					<div class="item-controls">
+						<a class="item-control" title="{{ localize "battlehammer.ItemEdit" }}" data-action="edit"><i class="fas fa-edit"></i></a>
+						<a class="item-control" title="{{ localize "battlehammer.ItemDelete" }}" data-action="delete"><i class="fas fa-trash"></i></a>
+					</div>
+				</li>
+				{{/each}}
+			</ol>
+			<p>
+				<a class="item-control" title="{{ localize "battlehammer.ItemCreate" }}" data-action="create"><i class="fas fa-plus"></i> {{ localize "battlehammer.ItemCreate" }}</a>
+			</p>
+		</div>
 
-        {{!-- Attributes Tab --}}
-        <div class="tab attributes" data-group="primary" data-tab="attributes">
-            <header class="attributes-header flexrow">
-                <span class="attribute-key">{{localize "battlehammer.AttributeKey"}}</span>
-                <span class="attribute-value">{{localize "battlehammer.AttributeValue"}}</span>
-                <span class="attribute-label">{{localize "battlehammer.AttributeLabel"}}</span>
-                <span class="attribute-dtype">{{localize "battlehammer.AttributeDtype"}}</span>
-                <a class="attribute-control" data-action="create" data-group="{{group}}"><i class="fas fa-plus"></i></a>
-            </header>
+		{{!-- Attributes Tab --}}
+		<div class="tab attributes" data-group="primary" data-tab="attributes">
+			<header class="attributes-header flexrow">
+				<span class="attribute-key">{{localize "battlehammer.AttributeKey"}}</span>
+				<span class="attribute-value">{{localize "battlehammer.AttributeValue"}}</span>
+				<span class="attribute-label">{{localize "battlehammer.AttributeLabel"}}</span>
+				<span class="attribute-dtype">{{localize "battlehammer.AttributeDtype"}}</span>
+				<a class="attribute-control" data-action="create" data-group="{{group}}"><i class="fas fa-plus"></i></a>
+			</header>
 
-            {{!-- Render the attribute list partial. --}}
-            {{> "systems/battlehammer/templates/parts/sheet-attributes.html" attributes=systemData.ungroupedAttributes dtypes=dtypes}}
+			{{!-- Render the attribute list partial. --}}
+			{{> "systems/battlehammer/templates/parts/sheet-attributes.html" attributes=systemData.ungroupedAttributes dtypes=dtypes}}
 
-            {{!-- Render the grouped attributes partial and control. --}}
-            <div class="groups">
-                {{> "systems/battlehammer/templates/parts/sheet-groups.html" attributes=systemData.groupedAttributes groups=systemData.groups dtypes=dtypes}}
+			{{!-- Render the grouped attributes partial and control. --}}
+			<div class="groups">
+				{{> "systems/battlehammer/templates/parts/sheet-groups.html" attributes=systemData.groupedAttributes groups=systemData.groups dtypes=dtypes}}
 
-                <div class="group-controls flexrow">
-                    <input class="group-prefix" type="text" value=""/>
-                    <a class="button group-control" data-action="create-group"><i class="fas fa-plus"></i>Add Attribute Group</a>
-                </div>
-            </div>
-        </div>
-    </section>
+				<div class="group-controls flexrow">
+					<input class="group-prefix" type="text" value=""/>
+					<a class="button group-control" data-action="create-group"><i class="fas fa-plus"></i>Add Attribute Group</a>
+				</div>
+			</div>
+		</div>
+	</section>
 </form>

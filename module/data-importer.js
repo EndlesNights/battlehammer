@@ -170,7 +170,13 @@ export default class DataImporter extends FormApplication {
 				folder: unitFolder.id,
 				data: modelData,
 				permission: {default: 1},
-				// token: {actorLink: true, flags:{battlehammer:{ownerID: game.userId}}}
+				token: {
+					actorLink: true,
+					flags:{
+						"wall-height": {tokenHeight: 1.1}
+						// battlehammer:{ownerID: game.userId}
+					}
+				}
 			});
 		}
 	}
