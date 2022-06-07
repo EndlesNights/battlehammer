@@ -1,3 +1,4 @@
+import { BATTLEHAMMER } from "../config.js";
 import CombatSetup from "./combatSetup.js";
 
 export class PhaseCombat extends Combat {
@@ -7,37 +8,52 @@ export class PhaseCombat extends Combat {
 		// this.permission = {default:3};
 	}
 	get phase() {
-		return this.getFlag("battlehammer", "phase") || "start";
+		// return this.getFlag("battlehammer", "phase") || "start";
+		// return this.combatants.values().next().value.flags.battlehammer.phase;
+		return this.combatants.values().next().value?.getFlag("battlehammer", "phase") || "start";
+		// console.log(this.combatants.values().next().value)
+		// console.log(this.combatants)
+		return "start"
 	}
 
 	get isOwner(){
 		return true;
 	}
+
+	// returns the turn orders in an array of objects
 	get turnOrder() {
 		const turnOrder = [];
 		for(const player of game.combat.combatants){
 			if(player.getFlag('battlehammer', 'type') === "player"){
-				turnOrder.push([player.initiative, player.data.flags.battlehammer?.userID, player.data.flags.battlehammer?.armyID,])
+				// turnOrder.push([player.initiative, player.data.flags.battlehammer?.userID, player.data.flags.battlehammer?.armyID,])
+				turnOrder.push({
+					initiative:player.initiative, 
+					userID: player.data.flags.battlehammer?.userID,
+					armyID: player.data.flags.battlehammer?.armyID,
+					combatantID: player.id
+				})
 			}
 		}
 		function SortFunc(a,b){
-			if (a[0] === b[0]) {
+			if (a.initiative === b.initiative) {
 				return 0;
 			}
 			else {
-				return (a[0] > b[0]) ? -1 : 1;
+				return (a.initiative > b.initiative) ? -1 : 1;
 			}
 		}
 		return turnOrder.sort(SortFunc);
 	}
 
 	_getPlayerTurn(){
-		let playerTurn = this.getFlag("battlehammer", "playerTurn");
-		if( playerTurn == undefined){
-			playerTurn = 0;
-			this.update({"flags.battlehammer.playerTurn": 0});
-		}
-		return playerTurn;
+		// console.log(this.combatants.values().next().value.data.flags)
+		return this.combatants.values().next().value?.getFlag("battlehammer", "playerTurn") || 0;
+		// let playerTurn = this.getFlag("battlehammer", "playerTurn");
+		// if( playerTurn == undefined){
+		// 	playerTurn = 0;
+		// 	this.update({"flags.battlehammer.playerTurn": 0});
+		// }
+		// return playerTurn;
 	}
 
 	resetPlayerTurns(){
@@ -46,33 +62,40 @@ export class PhaseCombat extends Combat {
 				this.setInitiative(player.id, null)
 			}
 		}
-		return this.update({"flags.battlehammer.playerTurn": 0});
+		this.combatants.values().next().value.setFlag("battlehammer", "playerTurn", 0);
+		// return this.update({"flags.battlehammer.playerTurn": 0});
 	}
 
 	nextPlayerTurn() {
-		if(this.getFlag("battlehammer", "playerTurn") + 1 <= this.getFlag('battlehammer', 'playersSize')) { 
+		if( this._getPlayerTurn() + 1 <= this.getFlag('battlehammer', 'playersSize')) { 
 			console.log("ERROR Outside of expected players turns bound!")
 		}
-		return this.update({"flags.battlehammer.playerTurn": this.getFlag("battlehammer", "playerTurn") + 1});
+		return this.combatants.values().next().value.setFlag("battlehammer", "playerTurn", this._getPlayerTurn() + 1);
+		// if(this.getFlag("battlehammer", "playerTurn") + 1 <= this.getFlag('battlehammer', 'playersSize')) { 
+		// 	console.log("ERROR Outside of expected players turns bound!")
+		// }
+		// return this.update({"flags.battlehammer.playerTurn": this.getFlag("battlehammer", "playerTurn") + 1});
 	}
 
 	previousPlayerTurn() {
-		if(this.getFlag("battlehammer", "playerTurn") > 0){
+		if( this._getPlayerTurn() > 0){
 			console.log("ERROR Outside of expected players turns bound!")
 		}
-		return this.update({"flags.battlehammer.playerTurn": this.getFlag("battlehammer", "playerTurn") - 1});
+		return this.combatants.values().next().value.setFlag("battlehammer", "playerTurn", this._getPlayerTurn() - 1);
+		// return this.update({"flags.battlehammer.playerTurn": this.getFlag("battlehammer", "playerTurn") - 1});
 	}
 
 	_getCurrentPlayerID(){
-		return game.users.get(this.turnOrder[this._getPlayerTurn()][1]).id;
+		return this.turnOrder[this._getPlayerTurn()].userID;
 	}
 
 	_getCurrentPlayerName(){
-		return game.users.get(this.turnOrder[this._getPlayerTurn()][1]).name;
+		return game.users.get(this.turnOrder[this._getPlayerTurn()].userID).name;
 	}
 
 	_getCurrentPlayerArmy(){
-		const rootFolder = game.folders.get(this.turnOrder[this._getPlayerTurn()][2]);
+		// const rootFolder = game.folders.get(this.turnOrder[this._getPlayerTurn()][2]);
+		const rootFolder = game.folders.get(this.turnOrder[this._getPlayerTurn()].armyID);
 		// const armyUnits = {};
 
 		let childrenToScan = [];
@@ -127,139 +150,103 @@ export class PhaseCombat extends Combat {
 		}
 	}
 
-	async nextRound() {
-		const playerTurn = this._getPlayerTurn();
-		this._resetUnitAction();
-		if( this.phase === "start" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "command", turn: 0});
-			this.render();
-			return to_return;
-		}
-		else if(this.phase === "command"){
-			console.log(this)
-			console.log("one")
+	nextTurn(options){
+		console.log("nextTurn");
 
-			let to_return = await this.update({"flags.battlehammer.phase": "move", turn: 0});
-			this.render();
-			return to_return; 
+		return this.nextRound();
+		if (this.phase === "assign"){
+			return this.update({"flags.battlehammer.phase": "move"});
 		}
-		else if ( this.phase === "move" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "psychic", turn: 0});
-			this.render();
-			return to_return;
-		}
-		else if ( this.phase === "psychic" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "shoot", turn: 0});
-			this.render();
-			return to_return;
-		}
-		else if ( this.phase === "shoot" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "charge", turn: 0});
-			this.render();
-			return to_return;
-		}
-		else if ( this.phase === "charge" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "fight", turn: 0});
-			this.render();
-			return to_return;
-		}
-		else if ( this.phase === "fight" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "morale", turn: 0});
-			this.render();
-			return to_return;
-		}
-		else if ( this.phase === "morale" ) {
-			if(playerTurn +1 === this.getFlag('battlehammer', 'playersSize')){
+		return super.nextTurn(options);
+	}
+
+
+	async nextRound() {
+
+		this._resetUnitAction();
+		if(BATTLEHAMMER.phases.indexOf(this.phase) === BATTLEHAMMER.phases.length - 1){
+			if(this._getPlayerTurn() +1 === this.getFlag('battlehammer', 'playersSize')){
 				this.resetPlayerTurns();
 				super.nextRound();
-				let to_return = await this.update({"flags.battlehammer.phase": "start", turn: 0});
-				this.render();
-				return to_return;
+				this.combatants.values().next().value.setFlag(
+					'battlehammer',
+					'phase',
+					BATTLEHAMMER.phases[0]
+				);
+				await this.render();
+				return {turn: 0};
 
 			} else {
-				let to_return = await this.update({
-					turn: 0,
-					"flags.battlehammer.phase": "command",
-					"flags.battlehammer.playerTurn": this.getFlag("battlehammer", "playerTurn") + 1
-				});
-				// await this.nextPlayerTurn(); //gets a little flickery is both are sperate calls
+				this.combatants.values().next().value.setFlag(
+					'battlehammer',
+					'phase',
+					BATTLEHAMMER.phases[1]
+				);
+				this.combatants.values().next().value.setFlag('battlehammer', 'playerTurn', this._getPlayerTurn()+1);
 				await this.render();
-				return await to_return;
+				return await this.update({
+					turn: 0,
+				});
 			}
-
+		}
+		else if(BATTLEHAMMER.phases.indexOf(this.phase) >= 0){
+			this.combatants.values().next().value.setFlag(
+				'battlehammer',
+				'phase',
+				BATTLEHAMMER.phases[BATTLEHAMMER.phases.indexOf(this.phase)+1]
+			);
+			await this.render();
+			return {turn: 0};
 		}
 		else {
-		  await this.setFlag("battlehammer", "phase", "start"); // Back to the assign phase
-		  return super.nextRound()
+			this.combatants.values().next().value.setFlag(
+				'battlehammer',
+				'phase',
+				BATTLEHAMMER.phases[0]
+			); // Back to the assign phase
+			return super.nextRound()
 		}
+
 	}
 
 	async previousRound(){
 
 		const playerTurn = this._getPlayerTurn();
 
-		if( this.phase === "start" ) {
+		if(BATTLEHAMMER.phases.indexOf(this.phase) === 0){
 			return ui.notifications.warn("Can not return to Prevoiuse Rounds.");
-			const round = Math.max(this.round - 1, 0);
-			let to_return = await this.update({round, "flags.battlehammer.phase": "morale", turn: 0});
-			this.render();
-			return to_return;
 		}
-		else if(this.phase === "command"){
+		else if(BATTLEHAMMER.phases.indexOf(this.phase) === 1){
 			if(playerTurn === 0){
-				let to_return = await this.update({"flags.battlehammer.phase": "start", turn: 0});
+				this.combatants.values().next().value.setFlag(
+					'battlehammer',
+					'phase',
+					BATTLEHAMMER.phases[0]
+				);
 				this.render();
-				return to_return; 
+				return {turn: 0}; 
 			} else {
-				// this.previousPlayerTurn()
-				let to_return = await this.update({
-					"flags.battlehammer.playerTurn": this.getFlag("battlehammer", "playerTurn") - 1,
-					"flags.battlehammer.phase": "morale",
-					turn: 0
-				});
+				this.combatants.values().next().value.setFlag('battlehammer', 'playerTurn', this._getPlayerTurn()-1);
+
+				this.combatants.values().next().value.setFlag(
+					'battlehammer',
+					'phase',
+					BATTLEHAMMER.phases[BATTLEHAMMER.phases.length-1]
+				);
 				this.render();
-				return to_return;
+				return {turn: 0};
 			}
 		}
-		else if ( this.phase === "move" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "command", turn: 0});
-			this.render();
-			return to_return;
+		else if(BATTLEHAMMER.phases.includes(this.phase)){
+			this.combatants.values().next().value.setFlag(
+				'battlehammer',
+				'phase',
+				BATTLEHAMMER.phases[BATTLEHAMMER.phases.indexOf(this.phase)-1]
+			);
+			await this.render();
+			return {turn: 0};
 		}
-		else if ( this.phase === "psychic" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "move", turn: 0});
-			this.render();
-			return to_return;
-		}
-		else if ( this.phase === "shoot" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "psychic", turn: 0});
-			this.render();
-			return to_return;
-		}
-		else if ( this.phase === "charge" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "shoot", turn: 0});
-			this.render();
-			return to_return;
-		}
-		else if ( this.phase === "fight" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "charge", turn: 0});
-			this.render();
-			return to_return;
-		}
-		else if ( this.phase === "morale" ) {
-			let to_return = await this.update({"flags.battlehammer.phase": "fight", turn: 0});
-			this.render();
-			return to_return;
-		} 
-	}
-
-	nextTurn(options){
-		console.log("nextTurn")
-		return this.nextRound();
-		if (this.phase === "assign"){
-			return this.update({"flags.battlehammer.phase": "move"});
-		}
-		return super.nextTurn(options);
+		return; 
 	}
 
 	_sortCombatants(a, b) {
@@ -333,6 +320,9 @@ export class PhaseCombatTracker extends CombatTracker{
 		}
 
 		if(combat.turnOrder.length){
+			console.log(combat._getCurrentPlayerID() === game.userId);
+			console.log(combat._getCurrentPlayerID());
+			console.log(game.userId);
 			data.control = (combat._getCurrentPlayerID() === game.userId);
 			// data.control = true;
 		}

@@ -4,6 +4,8 @@
  */
 
 // Import Modules
+import { BATTLEHAMMER } from "./config.js";
+
 import { BattlehammerActor } from "./actor/actor.js";
 import { BattlehammerItem } from "./item/item.js";
 import { BattlehammerItemSheet } from "./item/item-sheet.js";
@@ -35,7 +37,7 @@ import DropFolder from "./apps/dropFolder.js";
  * Init hook.
  */
 Hooks.once("init", async function() {
-	console.log(`Initializing Simple battlehammer System`);
+	console.log(`Initializing Battlehammer System`);
 
 	//Currently disabled the Combat State Button as with how Combat Tracker works in this module, it funcationly does nothing.
 	TokenHUD.prototype._onClickControl = (function(){
@@ -59,6 +61,7 @@ Hooks.once("init", async function() {
 	CONFIG.ui.combat = PhaseCombatTracker;
 
 	game.battlehammer = {
+		config: BATTLEHAMMER,
 		BattlehammerActor,
 		createBattlehammerMacro,
 		useEntity: foundry.utils.isNewerVersion("9", game.version ?? game.data.version)

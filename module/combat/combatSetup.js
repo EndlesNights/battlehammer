@@ -45,11 +45,21 @@ export default class CombatSetup extends FormApplication {
 
 		this.close({submit: false, force: true});
 
-		const usersArmyArray = []
+		const usersArmyArray = [];
+
+		//combat used to hold phase information
+		usersArmyArray.unshift({
+			_id: "Phase Tracker",
+			name: "Phase Tracker",
+			"flags.battlehammer.phase":"start",
+			"flags.battlehammer.type": "phaseTracker",
+			"flags.battlehammer.playerTurn": 0,
+		});
 		let i = 0;
 		//creat combatants for the players
 		for(const user of game.users){
-			if(formData["userData.army"][i]) { 
+			
+			if(formData["userData.army"][i]) {
 				console.log(user.id);
 				usersArmyArray.push({
 					_id: user.id,
@@ -57,7 +67,7 @@ export default class CombatSetup extends FormApplication {
 					img: user.avatar,
 					"flags.battlehammer.armyID":formData["userData.army"][i],
 					"flags.battlehammer.userID":user.id,
-					"flags.battlehammer.type": "player"
+					"flags.battlehammer.type": "player",
 				});
 				const folder = game.folders.get(formData["userData.army"][i]);
 				//update the root folder to match the users colour
@@ -68,11 +78,11 @@ export default class CombatSetup extends FormApplication {
 		const length = usersArmyArray.length;
 		// await this.combat.update({["permission.default"]: CONST.ENTITY_PERMISSIONS.OWNER});
 		
-		await this.combat.setFlag('battlehammer', 'playersSize', length);
+		await this.combat.setFlag('battlehammer', 'playersSize', length -1);  //-1 to ignore the holder
 
 		const actorPermissionData = [];
 		//create the combatants for the units
-		for(let index = 0; index < length; index++){
+		for(let index = 1; index < length; index++){
 			const user = usersArmyArray[index];
 			const rootFolder = game.folders.get(user['flags.battlehammer.armyID']);	
 			let childrenToScan = [];
