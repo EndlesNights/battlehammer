@@ -7,6 +7,60 @@ import {ATTRIBUTE_TYPES} from "../constants.js";
  */
 export class BattlehammerActorSheet extends ActorSheet {
 
+	  /** @inheritdoc */
+	  _getSubmitData(updateData = {}) {
+		console.log(updateData)
+		return super._getSubmitData(updateData);
+	  }
+
+
+
+	async _updateObject(event, formData) {
+
+		for(const [key, value] of Object.entries(formData)){
+			if(key.startsWith("unit.")){
+				const keyArray = key.split(".")
+				const targetID = keyArray[1];
+				const actorTarget = game.actors.get(targetID);
+				const path =  keyArray.slice(2).join('.');
+				const valueTarget = this._byString(path, actorTarget);
+
+				if(valueTarget === value) continue;
+
+				// await actorTarget.update({[keyArray.slice(3).join('.')]:value});
+
+				const data = {_id: targetID};
+				data[targetID,keyArray.slice(3).join('.')] = value
+				await Actor.updateDocuments([data]);
+				//force sheet to rerender if it is open
+				// actorTarget.sheet.render(actorTarget.sheet.rendered);
+			}
+		}
+		return super._updateObject(event, formData);
+	}
+
+		/* -------------------------------------------- */
+	/**
+	* Refrence a nested object by string.
+	* s is the string that holds the targeted nested adress
+	* o is the root objet, defaulting to this.object.data
+	*/
+	_byString(s, o) {
+		s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+		s = s.replace(/^\./, '');           // strip a leading dot
+		var a = s.split('.');
+		for (var i = 0, n = a.length; i < n; ++i) {
+			var k = a[i];
+			if (k in o) {
+				o = o[k];
+			} else {
+				return;
+			}
+		}
+		return o;
+	}
+
+
 	/** @inheritdoc */
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
@@ -30,7 +84,7 @@ export class BattlehammerActorSheet extends ActorSheet {
 		context.systemData = context.data.data;
 		context.dtypes = ATTRIBUTE_TYPES;
 		// context.unit = _getUnitData();
-		context.unit = this.actor.folder?.content || null;
+		context.unit = this._getUnitData();
 		console.log(context.unit)
 		return context;
 	}
@@ -139,6 +193,13 @@ export class BattlehammerActorSheet extends ActorSheet {
 	/* -------------------------------------------- */
 
 	_getUnitData(){
-		return this.actor.folder.content;
+
+		const data = this.actor.folder?.content;
+		if(!data) return null;
+
+		for(const [index, actor] of Object.entries(data)){
+			actor.isSelf = (actor.id === this.actor.id); 
+		}
+		return data
 	}
 }

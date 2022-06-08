@@ -6,6 +6,11 @@ import { EntitySheetHelper } from "../helper.js";
  */
 export class BattlehammerActor extends Actor {
 
+    /** @override */
+    _onUpdate(data, options, userId) {
+		super._onUpdate(data, options, userId);
+	}
+	
 	/** @inheritdoc */
 	prepareDerivedData() {
 		super.prepareDerivedData();
