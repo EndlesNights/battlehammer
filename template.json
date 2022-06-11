@@ -1,7 +1,7 @@
 {
 "Actor": {
-	"types": ["model"],
-	"model": {
+	"types": ["modelWH"],
+	"modelWH": {
 		"biography": "",
 		"attributes": {
 			"movement": {
@@ -57,7 +57,7 @@
 	}
 },
 "Item": {
-	"types": ["ability","psychicPower", "weapon"],
+	"types": ["ability","psychicPower", "weaponWH"],
 	"templates": {
 		"itemDescription": {
 			"description": "",
@@ -75,7 +75,7 @@
 			"base": 0
 		}
 	},
-	"weapon":{
+	"weaponWH":{
 		"templates": ["itemDescription"],
 		"range":{
 			"value": 0

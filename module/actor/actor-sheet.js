@@ -13,8 +13,6 @@ export class BattlehammerActorSheet extends ActorSheet {
 		return super._getSubmitData(updateData);
 	  }
 
-
-
 	async _updateObject(event, formData) {
 
 		for(const [key, value] of Object.entries(formData)){
@@ -27,13 +25,9 @@ export class BattlehammerActorSheet extends ActorSheet {
 
 				if(valueTarget === value) continue;
 
-				// await actorTarget.update({[keyArray.slice(3).join('.')]:value});
-
 				const data = {_id: targetID};
 				data[targetID,keyArray.slice(3).join('.')] = value
 				await Actor.updateDocuments([data]);
-				//force sheet to rerender if it is open
-				// actorTarget.sheet.render(actorTarget.sheet.rendered);
 			}
 		}
 		return super._updateObject(event, formData);
@@ -140,7 +134,7 @@ export class BattlehammerActorSheet extends ActorSheet {
 		switch ( button.dataset.action ) {
 			case "create":
 				const cls = getDocumentClass("Item");
-				return cls.create({name: game.i18n.localize("battlehammer.ItemNew"), type: "item"}, {parent: this.actor});
+				return cls.create({name: game.i18n.localize("battlehammer.ItemNewWeapon"), type: "weapon"}, {parent: this.actor});
 			case "edit":
 				return item.sheet.render(true);
 			case "delete":

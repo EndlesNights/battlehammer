@@ -166,7 +166,7 @@ export default class DataImporter extends FormApplication {
 		for(let i = 0; i < model.$number; i++){
 			await Actor.create({
 				name: model.$number == 1 ? model.$name : `${model.$name} (${i+1})`,
-				type: "model",
+				type: "modelWH",
 				folder: unitFolder.id,
 				data: modelData,
 				permission: {default: 1},

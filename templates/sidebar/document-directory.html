@@ -1,0 +1,32 @@
+<section class="tab sidebar-tab directory flexcol" id="{{tabName}}" data-tab="{{tabName}}">
+
+    <!-- Directory Header -->
+    <header class="directory-header">
+        <div class="header-actions action-buttons flexrow">
+            {{#if canCreate}}
+            <button class="create-document"><i class="{{sidebarIcon}}"></i> {{localize 'SIDEBAR.Create' type=label}}</button>
+            {{/if}}
+            {{#if user.isGM }}
+            <button class="create-folder"><i class="{{folderIcon}}"></i> {{localize 'FOLDER.Create'}}</button>
+            {{/if}}
+        </div>
+        <div class="header-search flexrow">
+            <i class="fas fa-search"></i>
+            <input type="text" name="search" value="" placeholder="{{localize 'SIDEBAR.Search' types=labelPlural}}" autocomplete="off"/>
+            <a class="header-control collapse-all" title="{{localize 'FOLDER.Collapse'}}"><i class="fas fa-sort-amount-up fa-fw"></i></a>
+        </div>
+    </header>
+
+    <!-- Directories List -->
+	<ol class="directory-list">
+	    {{~#each tree.children}}
+            {{> (lookup @root "folderPartial")}}
+	    {{/each}}
+	    {{#each tree.content}}
+            {{> (lookup @root "documentPartial")}}
+	    {{/each~}}
+	</ol>
+
+	<!-- Directory Footer -->
+	<footer class="directory-footer action-buttons"></footer>
+</section>

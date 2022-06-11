@@ -513,7 +513,7 @@ export class EntitySheetHelper {
      * @see ClientDocumentMixin.createDialog
      */
     static async createDialog(data={}, options={}) {
-
+      console.log("ENTER")
         // Collect data
         const documentName = this.metadata.name;
         const folders = game.folders.filter(f => (f.data.type === documentName) && f.displayed);

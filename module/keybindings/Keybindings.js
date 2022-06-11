@@ -7,13 +7,13 @@ export default class Keybindings{
 		if ( !(layer instanceof TokenLayer) ) return false;
 		const hovered = layer.placeables.find(t => t._hover);
 		if ( !hovered ) return false;
-		const folderID = hovered.actor.folder.id;
+		const folderID = hovered.actor.folder?.id;
 	   
 
 		if(folderID){
 			let unit = new Set();
 			for(const t of canvas.tokens.placeables){
-				if(t.actor.folder.id == folderID) {                  
+				if(t.actor.folder?.id == folderID) {                  
 					unit.add(t.id);
 				}
 			}
@@ -51,9 +51,17 @@ export default class Keybindings{
 
 	static _onDrawUnitCoherency(context){
 		if(context.isShift){
-			for(const e of canvas.drawcoherency){ e.clear()};
+			game.unitCoherence.clearCoherence();
 		} else {
 			game.unitCoherence.getUnitCoherence();
+		}
+	}
+
+	static _onCoverCalculate(context){
+		if(context.isShift){
+			game.unitCover.clearCoverLines();
+		} else {
+			game.unitCover.getUnitCover();
 		}
 	}
 }

@@ -22,6 +22,7 @@ import Keybindings from "./keybindings/Keybindings.js"
 
 import UnitCoherence from "./apps/coherency.js";
 import Scatter from "./apps/scatter.js";
+import UnitCover from "./apps/coverCalculator.js"
 
 import DataImporter from "./data-importer.js"
 
@@ -73,12 +74,21 @@ Hooks.once("init", async function() {
 
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
-	Actors.registerSheet("battlehammer", BattlehammerActorSheet, { makeDefault: true });
+	Actors.registerSheet("battlehammer", BattlehammerActorSheet, {
+		types: ["modelWH"],
+		label: "Model (WH)",
+		makeDefault: true 
+	});
 	Items.unregisterSheet("core", ItemSheet);
-	Items.registerSheet("battlehammer", BattlehammerItemSheet, { makeDefault: true });
+	Items.registerSheet("battlehammer", BattlehammerItemSheet, {
+		types: ["weaponWH"],
+		label: "Weapon (WH)",
+		 makeDefault: true 
+	});
 
 	// Set up functions so that they can be called from the console under game
 	game.unitCoherence = UnitCoherence;
+	game.unitCover = UnitCover;
 	game.scatter = function(){Scatter()};
 
 	Ruler.prototype.moveToken = moveToken;
@@ -89,12 +99,12 @@ Hooks.once("init", async function() {
         return function () {
 
 			if(arguments[0].data.originalEvent.shiftKey){
-				const folderID = arguments[0].target.actor.folder.id;
+				const folderID = arguments[0].target.actor.folder?.id;
 				if(!folderID) return original.apply(this, arguments);
 
 				let unit = new Set();
 				for(const t of canvas.tokens.placeables){
-					if(t.actor.folder.id == folderID) {                  
+					if(t.actor.folder?.id == folderID) {                  
 						unit.add(t.id);
 					}
 				}
@@ -132,7 +142,7 @@ Hooks.once("init", async function() {
 	game.system.data.initiative = "1d6";
 
 	//Register keybind for Unit target 
-	game.keybindings.register("battlegammer", "targetUnit", {
+	game.keybindings.register("battlehammer", "targetUnit", {
 		name: "Target Unit",
 		hint: "Targets all models within a unit.",
 		editable: [{key: "KeyR"}],
@@ -141,11 +151,19 @@ Hooks.once("init", async function() {
 	});
 
 	//Register keybind for Coherency Check
-	game.keybindings.register("battlegammer", "unitCoherency", {
+	game.keybindings.register("battlehammer", "unitCoherency", {
 		name: "Checks Unit Coherency",
 		hint: "Draws visual lines between all models within a unit.",
 		editable: [{key: "KeyF"}],
 		onDown: Keybindings._onDrawUnitCoherency,
+		reservedModifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]
+	});
+
+	game.keybindings.register("battlehammer", "coverCalc", {
+		name: "Check Cover",
+		hint: "Check the cover between the selected and targeted tokens",
+		editable: [{key: "KeyG"}],
+		onDown: Keybindings._onCoverCalculate,
 		reservedModifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]
 	});
 
@@ -317,7 +335,7 @@ Hooks.on("hoverToken", (token, isHovering) => {
 
 function getCombatantHover(token){
 	for(const combatant of game.combat.combatants){
-		if(token.actor.folder.id === combatant.data.flags.battlehammer?.unitData?.folderId){
+		if(token.actor.folder?.id === combatant.data.flags.battlehammer?.unitData?.folderId){
 			return combatant;
 		}
 	}

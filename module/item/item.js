@@ -16,7 +16,7 @@ export class BattlehammerItem extends Item {
     /* -------------------------------------------- */
 
     /** @override */
-    static async createDialog(data={}, options={}) {
-        return EntitySheetHelper.createDialog.call(this, data, options);
-    }
+    // static async createDialog(data={}, options={}) {
+        // return EntitySheetHelper.createDialog.call(this, data, options);
+    // }
 }

@@ -10,7 +10,7 @@ export class BattlehammerItemSheet extends ItemSheet {
     /** @inheritdoc */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ["battlehammer", "sheet", "item"],
+            classes: ["battlehammer", "sheet", weapon],
             template: "systems/battlehammer/templates/item-sheet.html",
             width: 520,
             height: 480,

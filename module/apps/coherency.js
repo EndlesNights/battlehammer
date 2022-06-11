@@ -1,17 +1,18 @@
 export default class UnitCoherence {
 
 	static clearCoherence(){
-		for(const e of canvas.someGraphics){ e.clear()};
+		for(const e of canvas.drawcoherency){ e.clear()};
 	}
 
 	static getUnitCoherence(){
+		if(!canvas.ready) return;
 		if(!canvas.activeLayer.placeables.find(t => t._hover)) return;
 		
-		const folderID = canvas.activeLayer.placeables.find(t => t._hover).actor.folder.id;
+		const folderID = canvas.activeLayer.placeables.find(t => t._hover).actor.folder?.id;
 		
 		const unit = {}
 		for(const t of canvas.tokens.placeables){
-			if(t.actor.folder.id == folderID) {
+			if(t.actor.folder?.id == folderID) {
 				unit[t.id] = {
 					x:t.x + t.width/2,
 					y:t.y + t.height/2,
@@ -78,7 +79,7 @@ export default class UnitCoherence {
 			if(nodeMap[d.id].length < numberOfNeededConnections) color = "0xFFA500";
 			let thickness = 3;
 
-			let index = canvas.drawcoherency.length;
+			const index = canvas.drawcoherency.length;
 			canvas.drawcoherency[index] = new PIXI.Graphics();
 			canvas.drawcoherency[index].position.set(d.x1, d.y1);
 			canvas.drawcoherency[index].lineStyle(thickness, color).moveTo(0, 0).lineTo(d.x2 - d.x1, d.y2 - d.y1);
@@ -113,12 +114,11 @@ export default class UnitCoherence {
 			let color = "0xFF0000";
 			let thickness = 3;
 
-			let index = canvas.drawcoherency.length;
+			const index = canvas.drawcoherency.length;
 			canvas.drawcoherency[index] = new PIXI.Graphics();
 			canvas.drawcoherency[index].position.set(d.x1, d.y1);
 			canvas.drawcoherency[index].lineStyle(thickness, color).moveTo(0, 0).lineTo(d.x2 - d.x1, d.y2 - d.y1);
 			canvas.foreground.addChild(canvas.drawcoherency[index]);
 		}
-		
 	}
 }  

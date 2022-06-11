@@ -8,6 +8,7 @@
     "battlehammer.ItemEdit": "Edit Item",
     "battlehammer.ItemDelete": "Delete Item",
     "battlehammer.ItemNew": "New Item",
+    "battlehammer.ItemNewWeapon": "New Weapon",
 
     "battlehammer.NotifyInitFormulaUpdated": "Initiative formula was updated to",
     "battlehammer.NotifyInitFormulaInvalid": "Initiative formula was invalid",
@@ -22,7 +23,7 @@
 
     "battlehammer.DefineTemplate": "Define as Template",
     "battlehammer.UnsetTemplate": "Unset Template",
-    "battlehammer.NoTemplate": "No Template",
+    "battlehammer.ModelWH": "Model (WH)",
 
     "battlehammer.AttributeKey": "Attribute Key",
     "battlehammer.AttributeValue": "Value",
