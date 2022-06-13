@@ -1,5 +1,5 @@
 import { BATTLEHAMMER } from "../config.js";
-import CombatSetup from "./combatSetup.js";
+import CombatSetup from "./combat-setup.js";
 
 export class PhaseCombat extends Combat {
 	constructor(data, context) {
@@ -117,7 +117,7 @@ export class PhaseCombat extends Combat {
 		return folder.children
 	}
 
-	_resetUnitAction(){
+	_resetUnitActions(){
 		for(const unit of this.combatants){
 			if(unit.getFlag('battlehammer', 'type') === "unit"){
 				unit.setFlag('battlehammer', "hasAction", true);
@@ -133,7 +133,7 @@ export class PhaseCombat extends Combat {
 
 	async nextRound() {
 
-		this._resetUnitAction();
+		this._resetUnitActions();
 		if(BATTLEHAMMER.phases.indexOf(this.phase) === BATTLEHAMMER.phases.length - 1){
 			if(this._getPlayerTurn() +1 === this.getFlag('battlehammer', 'playersSize')){
 				this.resetPlayerTurns();
@@ -240,7 +240,7 @@ export class PhaseCombatTracker extends CombatTracker{
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			id: "combat",
-			template: "systems/battlehammer/templates/sidebar/combat-tracker.html",
+			template: "systems/battlehammer/templates/sidebar/phase-combat-tracker.html",
 			title: "Combat Tracker",
 			scrollY: [".directory-list"]
 		});

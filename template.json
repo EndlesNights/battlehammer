@@ -1,6 +1,22 @@
 {
 "Actor": {
-	"types": ["modelWH"],
+	"types": ["modelGdF", "modelWH"],
+	"modelGdF":{
+		"biography": "",
+		"attributes":{
+			"quality":{
+				"value":0
+			},
+			"defense":{
+				"value":0
+			}
+		},
+		"details":{
+			"cost":{
+				"value":0
+			}
+		}
+	},
 	"modelWH": {
 		"biography": "",
 		"attributes": {

@@ -26,7 +26,7 @@ import UnitCover from "./apps/coverCalculator.js"
 
 import DataImporter from "./data-importer.js"
 
-import {PhaseCombat, PhaseCombatTracker, prepareDerivedData, _getInitiativeFormula} from './combat/combat.js';
+import {PhaseCombat, PhaseCombatTracker, prepareDerivedData, _getInitiativeFormula} from './combat/phase-combat.js';
 
 import DropFolder from "./apps/dropFolder.js";
 
@@ -49,17 +49,10 @@ Hooks.once("init", async function() {
 		}
 	})();
 
-	/**
-	 * Set an initiative formula for the system. This will be updated later.
-	 * @type {String}
-	 */
-	CONFIG.Combat.initiative = {
-		formula: "1d20",
-		decimals: 2
-	};
-
 	CONFIG.Combat.documentClass = PhaseCombat;
 	CONFIG.ui.combat = PhaseCombatTracker;
+	Combatant.prototype.prepareDerivedData = prepareDerivedData;
+	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 
 	game.battlehammer = {
 		config: BATTLEHAMMER,
@@ -134,10 +127,6 @@ Hooks.once("init", async function() {
             return original.apply(this, arguments);
         }
     })();
-
-
-	Combatant.prototype.prepareDerivedData = prepareDerivedData;
-	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 
 	game.system.data.initiative = "1d6";
 
