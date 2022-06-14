@@ -13,3 +13,9 @@ BATTLEHAMMER.phases = [
 	'fight',
 	'morale',
 ];
+
+BATTLEHAMMER.activationPhases = [
+	'start',
+	'deploy',
+	'play'
+];

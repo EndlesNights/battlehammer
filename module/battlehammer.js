@@ -27,6 +27,7 @@ import UnitCover from "./apps/coverCalculator.js"
 import DataImporter from "./data-importer.js"
 
 import {PhaseCombat, PhaseCombatTracker, prepareDerivedData, _getInitiativeFormula} from './combat/phase-combat.js';
+import {ActivationCombat, ActivationCombatTracker} from './combat/activation-combat.js';
 
 import DropFolder from "./apps/dropFolder.js";
 
@@ -49,8 +50,12 @@ Hooks.once("init", async function() {
 		}
 	})();
 
-	CONFIG.Combat.documentClass = PhaseCombat;
-	CONFIG.ui.combat = PhaseCombatTracker;
+	// CONFIG.Combat.documentClass = PhaseCombat;
+	// CONFIG.ui.combat = PhaseCombatTracker;
+	
+	CONFIG.Combat.documentClass = ActivationCombat;
+	CONFIG.ui.combat = ActivationCombatTracker;
+
 	Combatant.prototype.prepareDerivedData = prepareDerivedData;
 	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 
