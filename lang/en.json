@@ -65,8 +65,8 @@
 	"battlehammer.phases.morale": "Morale Phase",
 
 
-	"battlehammer.activationPhases.start": "Roll Off Phase",
-	"battlehammer.activationPhases.deploy": "deploy Phase",
+	"battlehammer.activationPhases.start": "Roll Off",
+	"battlehammer.activationPhases.deploy": "Deploy Phase",
 	"battlehammer.activationPhases.play": "Play Phase"
 
 }

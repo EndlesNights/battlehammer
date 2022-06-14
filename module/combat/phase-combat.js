@@ -51,8 +51,8 @@ export class PhaseCombat extends Combat {
 	}
 
 	nextPlayerTurn() {
-		if( this._getPlayerTurn() + 1 <= this.getFlag('battlehammer', 'playersSize')) { 
-			console.log("ERROR Outside of expected players turns bound!")
+		if( this._getPlayerTurn() + 1 >= this.getFlag('battlehammer', 'playersSize')) { 
+			return this.combatants.values().next().value.setFlag("battlehammer", "playerTurn", 0);
 		}
 		return this.combatants.values().next().value.setFlag("battlehammer", "playerTurn", this._getPlayerTurn() + 1);
 	}
@@ -117,10 +117,18 @@ export class PhaseCombat extends Combat {
 		return folder.children
 	}
 
-	_resetUnitActions(){
+	_resetUnitActionsOn(){
 		for(const unit of this.combatants){
 			if(unit.getFlag('battlehammer', 'type') === "unit"){
 				unit.setFlag('battlehammer', "hasAction", true);
+			}
+		}
+	}
+
+	_resetUnitActionsOff(){
+		for(const unit of this.combatants){
+			if(unit.getFlag('battlehammer', 'type') === "unit"){
+				unit.setFlag('battlehammer', "hasAction", false);
 			}
 		}
 	}
@@ -133,7 +141,7 @@ export class PhaseCombat extends Combat {
 
 	async nextRound() {
 
-		this._resetUnitActions();
+		this._resetUnitActionsOff();
 		if(BATTLEHAMMER.phases.indexOf(this.phase) === BATTLEHAMMER.phases.length - 1){
 			if(this._getPlayerTurn() +1 === this.getFlag('battlehammer', 'playersSize')){
 				this.resetPlayerTurns();
@@ -152,7 +160,7 @@ export class PhaseCombat extends Combat {
 					'phase',
 					BATTLEHAMMER.phases[1]
 				);
-				this.combatants.values().next().value.setFlag('battlehammer', 'playerTurn', this._getPlayerTurn()+1);
+				this.nextPlayerTurn();
 				await this.render();
 				return await this.update({
 					turn: 0,
