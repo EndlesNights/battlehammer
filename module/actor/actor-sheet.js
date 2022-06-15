@@ -59,7 +59,7 @@ export class BattlehammerActorSheet extends ActorSheet {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["battlehammer", "sheet", "actor"],
-			template: "systems/battlehammer/templates/actor/actor-sheet.html",
+			template: "systems/battlehammer/templates/actor/modelWH.html",
 			width: 1032,
 			height: 488,
 			tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}],
@@ -77,9 +77,7 @@ export class BattlehammerActorSheet extends ActorSheet {
 		context.shorthand = !!game.settings.get("battlehammer", "macroShorthand");
 		context.systemData = context.data.data;
 		context.dtypes = ATTRIBUTE_TYPES;
-		// context.unit = _getUnitData();
 		context.unit = this._getUnitData();
-		console.log(context.unit)
 		return context;
 	}
 
@@ -187,7 +185,6 @@ export class BattlehammerActorSheet extends ActorSheet {
 	/* -------------------------------------------- */
 
 	_getUnitData(){
-
 		const data = this.actor.folder?.content;
 		if(!data) return null;
 

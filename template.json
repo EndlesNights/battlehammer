@@ -9,11 +9,19 @@
 			},
 			"defense":{
 				"value":0
+			},
+			"movement": {
+				"value": 6
 			}
 		},
 		"details":{
 			"cost":{
+				"base":0,
 				"value":0
+			},
+			"health":{
+				"value": 1,
+				"max": 1
 			}
 		}
 	},
@@ -65,15 +73,15 @@
 				"other": ""
 			},
 			"health":{
-				"value": 0,
-				"max": 0
+				"value": 1,
+				"max": 1
 			}
 		},
 		"groups": {}
 	}
 },
 "Item": {
-	"types": ["ability","psychicPower", "weaponWH"],
+	"types": ["ability","psychicPower", "weaponGdF", "weaponWH"],
 	"templates": {
 		"itemDescription": {
 			"description": "",
@@ -89,6 +97,12 @@
 		"range":{
 			"value": 0,
 			"base": 0
+		}
+	},
+	"weaponGdF":{
+		"templates": ["itemDescription"],
+		"range":{
+			"value": 0
 		}
 	},
 	"weaponWH":{

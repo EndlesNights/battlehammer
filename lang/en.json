@@ -37,8 +37,8 @@
 	"battlehammer.New": "New",
 
 	"battlehammer.LabelWounds":"Wounds",
-	"battlehammer.LabelMovement":"M",
-	"battlehammer.LabelMovementHint":"Movement",
+	"battlehammer.LabelMove":"M",
+	"battlehammer.LabelMoveHint":"Movement",
 	"battlehammer.LabelWeaponSkill":"WS",
 	"battlehammer.LabelWeaponSkillHint":"Weapon Skill",
 	"battlehammer.LabelBallisticSkill":"BS",
@@ -53,6 +53,14 @@
 	"battlehammer.LabelLeadershipHint":"Leadership",
 	"battlehammer.LabelSave":"S",
 	"battlehammer.LabelSaveHint":"Save",
+
+	
+	"battlehammer.LabelCost":"Cost",
+	"battlehammer.LabelDefense":"Defense",
+	"battlehammer.LabelMovement":"Movement",
+	"battlehammer.LabelQuality":"Quality",
+	"battlehammer.LabelTough":"Tough",
+
 	
 
 	"battlehammer.phases.start": "Start Phase",
@@ -67,6 +75,11 @@
 
 	"battlehammer.activationPhases.start": "Roll Off",
 	"battlehammer.activationPhases.deploy": "Deploy Phase",
-	"battlehammer.activationPhases.play": "Play Phase"
+	"battlehammer.activationPhases.play": "Play Phase",
 
+
+	"EFFECT.statusActivated": "Activated",
+	"EFFECT.statusDead": "Dead",
+	"EFFECT.statusReticule": "Reticule",
+	"EFFECT.statusBleeding-eye": "Eye"
 }

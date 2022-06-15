@@ -2,9 +2,11 @@ export default function _getBorderColor() {
 	if(this._controlled) return CONFIG.Canvas.dispositionColors.CONTROLLED;
 	else if (this._hover) {
 
-		if(!this.actor.folder) return Number("0xFFFFFF")
+		if(!this.actor.folder) return Number("0xFFFFFF");
+
 		//color based off of root folder, which is derived from the controlling player's color
-		return Number(`0x${_getRootFolder(this).data.color.substring(1)}`)
+		const rootFolder = _getRootFolder(this);
+		return rootFolder.data.color ? Number(`0x${rootFolder.data.color.substring(1)}`) : Number("0xFFFFFF");
 	}
 	return null;
 }

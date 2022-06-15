@@ -10,6 +10,8 @@ import { BattlehammerActor } from "./actor/actor.js";
 import { BattlehammerItem } from "./item/item.js";
 import { BattlehammerItemSheet } from "./item/item-sheet.js";
 import { BattlehammerActorSheet } from "./actor/actor-sheet.js";
+import { GrimdarkFutureSheet } from "./actor/sheet-GdF.js";
+import { WHBattlehammerSheet } from "./actor/sheet-WH.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 import { createBattlehammerMacro } from "./macro.js";
 
@@ -75,9 +77,14 @@ Hooks.once("init", async function() {
 
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
-	Actors.registerSheet("battlehammer", BattlehammerActorSheet, {
+	Actors.registerSheet("battlehammer", WHBattlehammerSheet, {
 		types: ["modelWH"],
 		label: "Model (WH)",
+		makeDefault: true 
+	});
+	Actors.registerSheet("battlehammer", GrimdarkFutureSheet, {
+		types: ["modelGdF"],
+		label: "Model (GdF)",
 		makeDefault: true 
 	});
 	Items.unregisterSheet("core", ItemSheet);
@@ -323,6 +330,8 @@ Hooks.on("preCreateScene", (scene, data, options, userID) => {
 
 Hooks.on("hoverToken", (token, isHovering) => {
 	if(!game.combat?.combatants.size) return;
+	const combatant = getCombatantHover(token);
+	if(!combatant) return;
 	if(isHovering){
 		ui.combat.hoverCombatant(getCombatantHover(token), true)
 	} else {
@@ -336,6 +345,7 @@ function getCombatantHover(token){
 			return combatant;
 		}
 	}
+	return null;
 }
 
 // While holding down shift, apply effect from all other actors within a Unit 

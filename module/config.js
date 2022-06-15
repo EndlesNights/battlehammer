@@ -23,12 +23,22 @@ BATTLEHAMMER.activationPhases = [
 BATTLEHAMMER.statusEffects = [
 	{
 		id:"activated",
-		label: "Activated",
+		label: "EFFECT.statusActivated",
 		icon: "systems/battlehammer/icons/statusEffects/power-button.svg"
 	},
 	{
 		id: "dead",
 		label: "EFFECT.statusDead",
 		icon: "icons/svg/skull.svg"
+	},
+	{
+		id: "reticule",
+		label: "EFFECT.statusReticule",
+		icon: "systems/battlehammer/icons/statusEffects/reticule.svg"
+	},
+	{
+		id: "bleeding-eye",
+		label: "EFFECT.statusBleeding-eye",
+		icon: "systems/battlehammer/icons/statusEffects/bleeding-eye.svg"
 	}
 ]

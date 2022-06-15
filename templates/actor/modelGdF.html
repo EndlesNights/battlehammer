@@ -9,42 +9,22 @@
 			</h1>
 			<div class="flexrow">
 				<div class="resource wounds">
-					<span>{{ localize "battlehammer.LabelWounds" }}:</span>
+					<span>{{ localize "battlehammer.LabelTough" }}:</span>
 					<input type="number" name="data.details.health.value" value="{{systemData.details.health.value}}"/>
 					<span> / </span>
 					<input type="number" name="data.details.health.max" value="{{systemData.details.health.max}}"/>
 				</div>
 				<div class="resource">
+					<span title="{{ localize 'battlehammer.LabelQualityHint' }}">{{ localize "battlehammer.LabelQuality" }}:{{systemData.attributes.quality.value}}</span>
+				</div>
+				<div class="resource">
+					<span title="{{ localize 'battlehammer.LabelHint' }}">{{ localize "battlehammer.LabelDefense" }}:{{systemData.attributes.defense.value}}</span>
+				</div>
+				<div class="resource">
 					<span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{systemData.attributes.movement.value}}</span>
-					<!-- <input type="number" name="data.attributes.movement.value" value="{{systemData.attributes.movement.value}}"/> -->
 				</div>
 				<div class="resource">
-					<span title="{{ localize 'battlehammer.LabelWeaponSkillHint' }}">{{ localize "battlehammer.LabelWeaponSkill" }}:{{systemData.attributes.weaponSkill.value}}</span>
-					<!-- <input type="number" name="data.attributes.weaponSkill.value" value="{{systemData.attributes.weaponSkill.value}}"/> -->
-				</div>
-				<div class="resource">
-					<span title="{{ localize 'battlehammer.LabelBallisticSkillHint' }}">{{ localize "battlehammer.LabelBallisticSkill" }}:{{systemData.attributes.ballisticSkill.value}}</span>
-					<!-- <input type="number" name="data.attributes.ballisticSkill.value" value="{{systemData.attributes.ballisticSkill.value}}"/> -->
-				</div>
-				<div class="resource">
-					<span title="{{ localize 'battlehammer.LabelStrengthHint' }}">{{ localize "battlehammer.LabelStrength" }}:{{systemData.attributes.strength.value}}</span>
-					<!-- <input type="number" name="data.attributes.strength.value" value="{{systemData.attributes.strength.value}}"/> -->
-				</div>
-				<div class="resource">
-					<span title="{{ localize 'battlehammer.LabelToughnessHint' }}">{{ localize "battlehammer.LabelToughness" }}:{{systemData.attributes.toughness.value}}</span>
-					<!-- <input type="number" name="data.attributes.toughness.value" value="{{systemData.attributes.toughness.value}}"/> -->
-				</div>
-				<div class="resource">
-					<span title="{{ localize 'battlehammer.LabelAttacksHint' }}">{{ localize "battlehammer.LabelAttacks" }}:{{systemData.attributes.attacks.value}}</span>
-					<!-- <input type="number" name="data.attributes.attacks.value" value="{{systemData.attributes.attacks.value}}"/> -->
-				</div>
-				<div class="resource">
-					<span title="{{ localize 'battlehammer.LabelLeadershipHint' }}">{{ localize "battlehammer.LabelLeadership" }}:{{systemData.attributes.leadership.value}}</span>
-					<!-- <input type="number" name="data.attributes.leadership.value" value="{{systemData.attributes.leadership.value}}"/> -->
-				</div>
-				<div class="resource">
-					<span title="{{ localize 'battlehammer.LabelSaveHint' }}">{{ localize "battlehammer.LabelSave" }}:{{systemData.attributes.save.value}}</span>
-					<!-- <input type="number" name="data.attributes.save.value" value="{{systemData.attributes.save.value}}"/> -->
+					<span title="{{ localize 'battlehammer.LabelCostHint' }}">{{ localize "battlehammer.LabelCost" }}:{{systemData.details.cost.value}}</span>
 				</div>
 			</div>
 		</div>
@@ -71,27 +51,19 @@
 
 					{{#if model.isSelf}}
 					<td>
-						<span>{{ localize "battlehammer.LabelWounds" }}:</span>
+						<span>{{ localize "battlehammer.LabelTough" }}:</span>
 						<span style="padding-left: 2px;">{{model.data.data.details.health.value}}/{{model.data.data.details.health.max}}</span>
 					</td>
 
 					{{else}}
 					<td>
-						<span>{{ localize "battlehammer.LabelWounds" }}:</span>
+						<span>{{ localize "battlehammer.LabelTough" }}:</span>
 						<input style="width: 34px; text-align: center; "type="number" name="unit.{{model.id}}.data.data.details.health.value" value="{{model.data.data.details.health.value}}"/>
 						<span> / {{model.data.data.details.health.max}}</span>
 					</td>
 					{{/if}}
-
-
-					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelMovement" }}:{{model.data.data.attributes.movement.value}}</span></td>
-					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelWeaponSkill" }}:{{model.data.data.attributes.weaponSkill.value}}</span></td>
-					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelBallisticSkill" }}:{{model.data.data.attributes.ballisticSkill.value}}</span></td>
-					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelStrength" }}:{{model.data.data.attributes.strength.value}}</span></td>
-					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelToughness" }}:{{model.data.data.attributes.toughness.value}}</span></td>
-					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelAttacks" }}:{{model.data.data.attributes.attacks.value}}</span></td>
-					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelLeadership" }}:{{model.data.data.attributes.leadership.value}}</span></td>
-					<td><span title="{{ localize 'battlehammer.LabelMovementHint' }}">{{ localize "battlehammer.LabelSave" }}:{{model.data.data.attributes.save.value}}</span></td>
+					<td><span title="{{ localize 'battlehammer.LabelQualityHint' }}">{{ localize "battlehammer.LabelQuality" }}:{{model.data.data.attributes.quality.value}}</span></td>
+					<td><span title="{{ localize 'battlehammer.LabelDefenseHint' }}">{{ localize "battlehammer.LabelDefense" }}:{{model.data.data.attributes.defense.value}}</span></td>
 				</tr>
 				{{/each}}
 				</table>
