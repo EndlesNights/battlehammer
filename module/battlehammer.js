@@ -70,6 +70,9 @@ Hooks.once("init", async function() {
 	CONFIG.Actor.documentClass = BattlehammerActor;
 	CONFIG.Item.documentClass = BattlehammerItem;
 
+	CONFIG.BATTLEHAMMER = BATTLEHAMMER;
+	CONFIG.statusEffects = CONFIG.BATTLEHAMMER.statusEffects;
+
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("battlehammer", BattlehammerActorSheet, {
@@ -379,11 +382,37 @@ Hooks.on("preDeleteActiveEffect", async (effect, context, user) => {
 			continue;
 		}
 		if(!actor.effects.size) continue;
-		for(const effect of actor.effects.contents){
-			if(effect.data.label === effect.data.label){
-				effect.delete({linkGenerated:true});
+		for(const eff of actor.effects.contents){
+			if(eff.data.label === effect.data.label){
+				eff.delete({linkGenerated:true});
 				break;
 			}
 		}
 	}
 });
+
+Hooks.on("renderTokenHUD", (app, html, data) => {
+	//Display name of status effect when mousning over
+	const message = `
+	<div class="status-effect-title" id="displayStatLine" >STATUS EFFECT</div>
+	
+	<script>
+	var statusName
+	$(".effect-control ").hover(
+		function(eventObj) {
+			statusName = eventObj.target.title;
+			document.getElementById("displayStatLine").innerHTML = statusName;
+			eventObj.target.title = '';
+			document.getElementById("displayStatLine").classList.add("active");
+		},
+		function(eventObj) {
+			eventObj.target.title = statusName;
+			document.getElementById("displayStatLine").innerHTML = '';
+			document.getElementById("displayStatLine").classList.remove("active");
+		}
+	);
+	</script>
+	`
+	
+	html.find('.effect-control').last().after(message);
+	});

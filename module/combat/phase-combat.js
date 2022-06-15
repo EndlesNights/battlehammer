@@ -306,13 +306,39 @@ export class PhaseCombatTracker extends CombatTracker{
 		}
 		return data;
 	}
-	 
+	
+	_manangeHasActionEffect(bool=true){
+		if(bool){
+			for(const t of this._highlighted){
+				t.actor.createEmbeddedDocuments("ActiveEffect", [{
+					label: "activated",
+					icon:"systems/battlehammer/icons/statusEffects/power-button.svg",
+					flags: {core:{statusId:"activated"}},
+					changes: [],
+					options: {linkGenerated:true}
+				}]);
+			}
+		} else {
+			for(const t of this._highlighted){
+				if(!t.actor.effects.size) continue;
+				for(const eff of t.actor.effects.contents){
+					if(eff.data.label === "activated"){
+						eff.delete({linkGenerated:true});
+						break;
+					}
+				}
+			}
+		}
+
+	}
+
 	async _onCombatantMouseDown(event) {
 		event.preventDefault();
 		const combatantId = event.currentTarget.dataset.combatantId;
 		const combatant = this.viewed.combatants.get(combatantId);
 		
 		if(event.target.getAttribute('name') === "action-input"){
+			this._manangeHasActionEffect(!(combatant.getFlag('battlehammer', "hasAction")));
 			return await combatant.setFlag('battlehammer', "hasAction", !(combatant.getFlag('battlehammer', "hasAction")));
 		}
 

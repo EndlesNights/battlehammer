@@ -18,6 +18,10 @@ export class BattlehammerActor extends Actor {
 		this.data.data.attributes = this.data.data.attributes || {};
 	}
 
+	get isOwner(){
+		return true;
+	}
+
 	/* -------------------------------------------- */
 
 	// /** @override */
