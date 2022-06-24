@@ -132,8 +132,9 @@ export class BattlehammerActorSheet extends ActorSheet {
 		switch ( button.dataset.action ) {
 			case "create":
 				const cls = getDocumentClass("Item");
-				return cls.create({name: game.i18n.localize("battlehammer.ItemNewWeapon"), type: "weapon"}, {parent: this.actor});
+				return cls.create({name: game.i18n.localize("battlehammer.ItemNewWeapon"), type: "weaponGdF"}, {parent: this.actor});
 			case "edit":
+				console.log(item)
 				return item.sheet.render(true);
 			case "delete":
 				return item.delete();

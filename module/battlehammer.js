@@ -88,11 +88,17 @@ Hooks.once("init", async function() {
 		makeDefault: true 
 	});
 	Items.unregisterSheet("core", ItemSheet);
-	Items.registerSheet("battlehammer", BattlehammerItemSheet, {
-		types: ["weaponWH"],
-		label: "Weapon (WH)",
-		 makeDefault: true 
-	});
+	Items.registerSheet("battlehammer", BattlehammerItemSheet, { makeDefault: true });
+	// Items.registerSheet("battlehammer", BattlehammerItemSheet, {
+	// 	types: ["weaponWH"],
+	// 	label: "Weapon (WH)",
+	// 	 makeDefault: true 
+	// });
+	// Items.registerSheet("battlehammer", BattlehammerItemSheet, {
+	// 	types: ["weaponGdF"],
+	// 	label: "Weapon (GdF)",
+	// 	 makeDefault: true 
+	// });
 
 	// Set up functions so that they can be called from the console under game
 	game.unitCoherence = UnitCoherence;
