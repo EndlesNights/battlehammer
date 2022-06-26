@@ -62,10 +62,7 @@ Hooks.once("init", async function() {
 	Combatant.prototype.prepareDerivedData = prepareDerivedData;
 	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 
-	// ActorDirectory = ActorDirectoryExtension;
-	// ActorDirectory.prototype.initialize = ActorDirectoryExtension.prototype.initialize;
 	ActorDirectory.prototype.getData = ActorDirectoryExtension.prototype.getData;
-	ActorDirectory.prototype.walk = ActorDirectoryExtension.prototype.walk;
 
 	game.battlehammer = {
 		config: BATTLEHAMMER,

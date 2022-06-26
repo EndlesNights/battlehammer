@@ -22,8 +22,21 @@ export class BattlehammerActor extends Actor {
 	prepareDerivdedModelCost(){
 		if(!this.data.data.details?.cost) return;
 		let cost = 0;
+		let defenseCost = parseInt(this.data.data.attributes.defense.value);
+		let qualityCost = parseInt(this.data.data.attributes.quality.value);
 
-		switch(parseInt(this.data.data.attributes.defense.value)){
+		for(const item of this.items){
+			console.log(item)
+			if(item.getCost){
+				const itemCost = item.getCost;
+
+				cost += itemCost.baseValue;
+				defenseCost += itemCost.defenseCost;
+				qualityCost += itemCost.qualityCost;
+			}
+		}
+
+		switch(defenseCost){
 			case 6:
 				cost += 2; break;
 			case 5:
@@ -38,7 +51,7 @@ export class BattlehammerActor extends Actor {
 				cost += Infinity; break;
 		}
 
-		switch(parseInt(this.data.data.attributes.quality.value)){
+		switch(qualityCost){
 			case 6:
 				cost += 2; break;
 			case 5:
@@ -56,12 +69,7 @@ export class BattlehammerActor extends Actor {
 		cost *= this.data.data.details.health.max;
 		
 
-		for(const item of this.items){
-			console.log(item)
-			if(item.getCost){
-				cost += item.getCost;
-			}
-		}
+
 
 
 		this.data.data.details.cost.value = cost;

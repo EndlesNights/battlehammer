@@ -15,10 +15,14 @@ export class BattlehammerItem extends Item {
 
     get getCost(){
         if(this.data.data.cost?.base){
-            return this.data.data.cost.base;
+            return {
+                baseValue: this.data.data.cost.base || 0,
+                defenseCost: this.data.data.cost.defense || 0,
+                qualityCost: this.data.data.cost.quality || 0
+            };
         }
 
-        return 0;
+        return null;
     }
 
     /* -------------------------------------------- */
