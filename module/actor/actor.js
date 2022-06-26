@@ -16,8 +16,57 @@ export class BattlehammerActor extends Actor {
 		super.prepareDerivedData();
 		this.data.data.groups = this.data.data.groups || {};
 		this.data.data.attributes = this.data.data.attributes || {};
+		this.prepareDerivdedModelCost()
 	}
 
+	prepareDerivdedModelCost(){
+		if(!this.data.data.details?.cost) return;
+		let cost = 0;
+
+		switch(parseInt(this.data.data.attributes.defense.value)){
+			case 6:
+				cost += 2; break;
+			case 5:
+				cost += 4; break;
+			case 4:
+				cost += 6; break;
+			case 3:
+				cost += 8; break;
+			case 2:
+				cost += 12; break;
+			case 0:
+				cost += Infinity; break;
+		}
+
+		switch(parseInt(this.data.data.attributes.quality.value)){
+			case 6:
+				cost += 2; break;
+			case 5:
+				cost += 4; break;
+			case 4:
+				cost += 6; break;
+			case 3:
+				cost += 8; break;
+			case 2:
+				cost += 12; break;
+			case 0:
+				cost += Infinity; break;
+		}
+
+		cost *= this.data.data.details.health.max;
+		
+
+		for(const item of this.items){
+			console.log(item)
+			if(item.getCost){
+				cost += item.getCost;
+			}
+		}
+
+
+		this.data.data.details.cost.value = cost;
+		
+	}
 	get isOwner(){
 		return true;
 	}

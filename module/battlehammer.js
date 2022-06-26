@@ -18,6 +18,7 @@ import { createBattlehammerMacro } from "./macro.js";
 import moveToken from "./overrides/moveToken.js"
 import _refreshBorder from "./overrides/_refreshBorder.js"
 import _getBorderColor from "./overrides/_getBorderColor.js"
+import ActorDirectoryExtension from "./overrides/ActorDirectoryExtension.js";
 
 import Keybindings from "./keybindings/Keybindings.js"
 
@@ -60,6 +61,11 @@ Hooks.once("init", async function() {
 
 	Combatant.prototype.prepareDerivedData = prepareDerivedData;
 	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
+
+	// ActorDirectory = ActorDirectoryExtension;
+	// ActorDirectory.prototype.initialize = ActorDirectoryExtension.prototype.initialize;
+	ActorDirectory.prototype.getData = ActorDirectoryExtension.prototype.getData;
+	ActorDirectory.prototype.walk = ActorDirectoryExtension.prototype.walk;
 
 	game.battlehammer = {
 		config: BATTLEHAMMER,

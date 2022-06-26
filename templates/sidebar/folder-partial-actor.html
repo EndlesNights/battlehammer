@@ -1,0 +1,25 @@
+<li class="directory-item folder flexcol {{#unless this.expanded}}collapsed{{/unless}}"
+    data-folder-id="{{this.id}}" data-folder-depth="{{this.depth}}">
+  <header class="folder-header flexrow" style="background-color: {{this.data.color}}">
+    <h3><i class="fas fa-folder-open fa-fw"></i>{{this.name}} {{#if this.value}} POINTS: {{this.value}} {{/if}}</h3>
+    {{#if @root.user.isGM}}
+    <a class=" create-button create-folder" data-parent-folder="{{this.id}}">
+      <i class="{{@root.folderIcon}}"></i>
+      <i class="fas fa-plus"></i>
+    </a>
+    <a class=" create-button create-document" data-folder="{{this.id}}">
+      <i class="{{@root.sidebarIcon}}"></i>
+      <i class="fas fa-plus"></i>
+    </a>
+	{{/if}}
+  </header>
+
+  <ol class="subdirectory">
+	{{~#each this.children as |child|}}
+      {{> (lookup @root "folderPartial")}}
+    {{/each}}
+    {{#each this.content}}
+      {{> (lookup @root "documentPartial")}}
+    {{/each~}}
+  </ol>
+</li>

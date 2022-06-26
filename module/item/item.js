@@ -13,6 +13,14 @@ export class BattlehammerItem extends Item {
         this.data.data.attributes = this.data.data.attributes || {};
     }
 
+    get getCost(){
+        if(this.data.data.cost?.base){
+            return this.data.data.cost.base;
+        }
+
+        return 0;
+    }
+
     /* -------------------------------------------- */
 
     /** @override */

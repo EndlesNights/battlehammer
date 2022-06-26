@@ -101,6 +101,9 @@
 	},
 	"weaponGdF":{
 		"templates": ["itemDescription"],
+		"cost":{
+			"base": 0
+		},
 		"range":{
 			"value": 0
 		}
